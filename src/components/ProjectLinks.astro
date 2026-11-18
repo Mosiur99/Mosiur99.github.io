@@ -1,0 +1,44 @@
+---
+import Icon from './Icon.astro';
+import type { Project } from '../content/schemas';
+
+interface Props {
+  links: Project['links'];
+  title: string;
+}
+
+const { links, title } = Astro.props;
+---
+
+{links.length > 0 && (
+  <ul class="project-links">
+    {links.map((link) => (
+      <li>
+        <a href={link.url} target="_blank" rel="noopener noreferrer">
+          {link.label}
+          <span class="visually-hidden"> for {title}</span>
+          <Icon name="external" size={14} />
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+</style>

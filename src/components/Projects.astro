@@ -1,0 +1,245 @@
+---
+import ProjectLinks from './ProjectLinks.astro';
+import SectionHeading from './SectionHeading.astro';
+import Tag from './Tag.astro';
+import type { Project } from '../content/schemas';
+import { projectBadges, splitProjects } from '../lib/projects';
+
+interface Props {
+  projects: Project[];
+  allReposUrl: string;
+}
+
+const { projects, allReposUrl } = Astro.props;
+const { featured, others } = splitProjects(projects);
+---
+
+<section id="projects" aria-labelledby="projects-title">
+  <SectionHeading id="projects-title" title="Projects">
+    <a href={allReposUrl} target="_blank" rel="noopener noreferrer">
+      All repositories →
+    </a>
+  </SectionHeading>
+
+  <article class="featured">
+    <div class="body">
+      <p class="label">Featured project</p>
+      <h3>{featured.title}</h3>
+      <p class="summary">{featured.summary}</p>
+      {featured.highlights.length > 0 && (
+        <ul class="highlights">
+          {featured.highlights.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      )}
+      <ul class="tags" aria-label="Tech stack">
+        {featured.stack.map((item) => (
+          <li>
+            <Tag>{item}</Tag>
+          </li>
+        ))}
+      </ul>
+      <ProjectLinks links={featured.links} title={featured.title} />
+    </div>
+    {featured.flow && (
+      <div class="flow">
+        <p class="flow-title" id="featured-flow">
+          Request flow
+        </p>
+        <ol aria-labelledby="featured-flow">
+          {featured.flow.map((step, index) => (
+            <li>
+              {index > 0 && (
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+              <span class="step">{step}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    )}
+  </article>
+
+  <ul class="grid">
+    {others.map((project) => (
+      <li>
+        <article class="card">
+          <div class="card-top">
+            <h3>{project.title}</h3>
+            <ul class="badges" aria-label="Project type">
+              {projectBadges(project).map((badge) => (
+                <li>
+                  <Tag tone="outline">{badge}</Tag>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p class="summary">{project.summary}</p>
+          {project.stack.length > 0 && (
+            <p class="stack">
+              <span class="visually-hidden">Built with </span>
+              {project.stack.join(' · ')}
+            </p>
+          )}
+          <ProjectLinks links={project.links} title={project.title} />
+        </article>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .featured {
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .body {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+  }
+
+  .label {
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: 600;
+  }
+
+  .featured h3 {
+    margin-top: calc(-1 * var(--space-2));
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .highlights {
+    padding-left: 18px;
+    list-style: disc;
+  }
+
+  .highlights li {
+    margin: 4px 0;
+  }
+
+  .highlights li::marker {
+    color: var(--color-faint);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .flow {
+    padding: var(--space-4) var(--space-5);
+    border-top: 1px solid var(--color-line);
+    background: var(--color-panel);
+  }
+
+  .flow-title {
+    margin-bottom: var(--space-2);
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+    font-weight: 600;
+  }
+
+  .flow ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    font: var(--text-xs) / 1.5 var(--font-mono);
+  }
+
+  .flow li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .step {
+    padding: 4px 9px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
+
+  .arrow {
+    color: var(--color-faint);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    height: 100%;
+    padding: 20px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+
+  .card:hover {
+    border-color: var(--color-line-strong);
+    background: var(--color-panel);
+  }
+
+  .card-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .card .summary {
+    flex: 1;
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+  }
+
+  .stack {
+    color: var(--color-muted);
+    font: var(--text-xs) / 1.6 var(--font-mono);
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .body {
+      padding: var(--space-4);
+    }
+  }
+</style>

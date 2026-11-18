@@ -2,8 +2,15 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { beforeAll, describe, expect, it } from 'vitest';
 import About from '../../src/components/About.astro';
 import Experience from '../../src/components/Experience.astro';
-import { experienceSchema, profileSchema } from '../../src/content/schemas';
-import { readYamlEntries } from './content-loader';
+import Projects from '../../src/components/Projects.astro';
+import Skills from '../../src/components/Skills.astro';
+import {
+  experienceSchema,
+  profileSchema,
+  projectSchema,
+  skillGroupSchema,
+} from '../../src/content/schemas';
+import { readFrontmatter, readYamlEntries } from './content-loader';
 
 let container: AstroContainer;
 const escape = (text: string) => text.replaceAll("'", '&#39;');
@@ -58,5 +65,48 @@ describe('Experience', () => {
       props: { companies: [older, rokomari], today },
     });
     expect(html.indexOf('Rokomari.com')).toBeLessThan(html.indexOf('Older Co'));
+  });
+});
+
+describe('Projects', () => {
+  const projects = readFrontmatter('projects').map(([, data]) => projectSchema.parse(data));
+  const render = () =>
+    container.renderToString(Projects, {
+      props: { projects, allReposUrl: 'https://github.com/Mosiur99?tab=repositories' },
+    });
+
+  it('puts the featured project before the cards', async () => {
+    const html = await render();
+    expect(html.indexOf('Featured project')).toBeLessThan(html.indexOf('class="card"'));
+    expect(html.match(/class="card"/g)).toHaveLength(projects.length - 1);
+  });
+
+  it('labels the request flow as an ordered list', async () => {
+    const html = await render();
+    expect(html).toMatch(/<ol aria-labelledby="featured-flow"/);
+    expect(html.match(/class="step"/g)).toHaveLength(5);
+  });
+
+  it('shows status badges for unfinished projects', async () => {
+    const html = await render();
+    expect(html).toContain('Under review');
+    expect(html).toContain('In progress');
+  });
+
+  it('names each link after its project for screen readers', async () => {
+    const html = await render();
+    expect(html).toContain('for PayLedger');
+    expect(html).toContain('for Lettuce');
+  });
+});
+
+describe('Skills', () => {
+  it('lists the groups in order', async () => {
+    const groups = readYamlEntries('skills.yaml').map(([, data]) => skillGroupSchema.parse(data));
+    const html = await container.renderToString(Skills, {
+      props: { groups: [...groups].reverse() },
+    });
+    const names = [...html.matchAll(/<dt[^>]*>([^<]+)<\/dt>/g)].map((m) => m[1]);
+    expect(names).toEqual([...groups].sort((a, b) => a.order - b.order).map((g) => g.name));
   });
 });
