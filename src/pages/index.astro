@@ -1,5 +1,7 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
+import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Home from '../layouts/Home.astro';
 import { sections } from '../lib/sections';
@@ -7,26 +9,19 @@ import { sections } from '../lib/sections';
 const entry = await getEntry('profile', 'main');
 if (!entry) throw new Error('src/content/profile.yaml must have a "main" entry');
 const profile = entry.data;
+const companies = (await getCollection('experience')).map((company) => company.data);
+
+const built = new Set(['about', 'experience']);
 ---
 
 <Home profile={profile}>
-  <section id="about" aria-label="About">
-    <p class="lead">{profile.lead}</p>
-  </section>
+  <About profile={profile} />
+  <Experience companies={companies} />
   {sections
-    .filter((section) => section.id !== 'about')
+    .filter((section) => !built.has(section.id))
     .map((section) => (
       <section id={section.id} aria-labelledby={`${section.id}-title`}>
         <SectionHeading id={`${section.id}-title`} title={section.label} />
       </section>
     ))}
 </Home>
-
-<style>
-  .lead {
-    max-width: 62ch;
-    color: var(--color-ink);
-    font-size: var(--text-lg);
-    line-height: 1.65;
-  }
-</style>
