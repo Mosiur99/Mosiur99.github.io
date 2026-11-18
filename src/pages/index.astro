@@ -1,11 +1,32 @@
 ---
-import Base from '../layouts/Base.astro';
-import { site } from '../lib/site';
+import { getEntry } from 'astro:content';
+import SectionHeading from '../components/SectionHeading.astro';
+import Home from '../layouts/Home.astro';
+import { sections } from '../lib/sections';
+
+const entry = await getEntry('profile', 'main');
+if (!entry) throw new Error('src/content/profile.yaml must have a "main" entry');
+const profile = entry.data;
 ---
 
-<Base>
-  <main>
-    <h1>{site.name}</h1>
-    <p>{site.role}</p>
-  </main>
-</Base>
+<Home profile={profile}>
+  <section id="about" aria-label="About">
+    <p class="lead">{profile.lead}</p>
+  </section>
+  {sections
+    .filter((section) => section.id !== 'about')
+    .map((section) => (
+      <section id={section.id} aria-labelledby={`${section.id}-title`}>
+        <SectionHeading id={`${section.id}-title`} title={section.label} />
+      </section>
+    ))}
+</Home>
+
+<style>
+  .lead {
+    max-width: 62ch;
+    color: var(--color-ink);
+    font-size: var(--text-lg);
+    line-height: 1.65;
+  }
+</style>

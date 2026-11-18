@@ -42,9 +42,9 @@ The first time you run end-to-end tests, install the browser with `npx playwrigh
 
 ```text
 src/
-  components/ reusable UI (Button, Tag, Icon, SectionHeading)
+  components/ UI pieces (Sidebar, SectionNav, ThemeToggle, Button, Tag, Icon, ...)
   content/    site content (YAML and Markdown) and its Zod schemas
-  layouts/    page shells
+  layouts/    page shells (Base: head and SEO, Home: sidebar + content column)
   lib/        shared TypeScript (site data, icons, helpers)
   pages/      routes (/styleguide shows every token and component)
   styles/     design tokens and global styles

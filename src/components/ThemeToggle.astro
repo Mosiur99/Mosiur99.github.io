@@ -1,0 +1,81 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button class="theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
+  <Icon name="moon" class="moon" />
+  <Icon name="sun" class="sun" />
+</button>
+
+<script>
+  import { THEME_STORAGE_KEY, parseTheme, resolveTheme, toggleTheme } from '../lib/theme';
+
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  const root = document.documentElement;
+
+  const current = () => resolveTheme(parseTheme(root.dataset.theme), media.matches);
+
+  function updateLabels() {
+    const next = toggleTheme(current());
+    document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
+      button.setAttribute('aria-label', `Switch to ${next} theme`);
+    });
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const next = toggleTheme(current());
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, next);
+      } catch {
+        /* storage unavailable: the choice lasts for this page only */
+      }
+      updateLabels();
+    });
+  });
+
+  media.addEventListener('change', updateLabels);
+  updateLabels();
+</script>
+
+<style>
+  .theme-toggle {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-muted);
+    cursor: pointer;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-ink);
+    border-color: var(--color-faint);
+  }
+
+  .theme-toggle :global(.sun) {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle :global(.sun) {
+    display: block;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle :global(.moon) {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .theme-toggle :global(.sun) {
+      display: block;
+    }
+
+    :global(:root:not([data-theme='light'])) .theme-toggle :global(.moon) {
+      display: none;
+    }
+  }
+</style>

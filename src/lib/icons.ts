@@ -64,6 +64,11 @@ export const icons = {
       'M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1',
     ],
   },
+  code: { viewBox: '0 0 24 24', paths: ['m8 6-6 6 6 6', 'm16 6 6 6-6 6'] },
+  user: {
+    viewBox: '0 0 24 24',
+    paths: ['M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z', 'M4 21c1-4.5 4.2-6.5 8-6.5s7 2 8 6.5'],
+  },
 } satisfies Record<string, IconDef>;
 
 export type IconName = keyof typeof icons;

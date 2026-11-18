@@ -1,23 +1,44 @@
 ---
 import '../styles/global.css';
-import { pageTitle } from '../lib/site';
+import { pageTitle, site } from '../lib/site';
 
 interface Props {
   title?: string;
+  description?: string;
   noindex?: boolean;
 }
 
-const { title, noindex = false } = Astro.props;
+const { title, description = site.description, noindex = false } = Astro.props;
+const fullTitle = pageTitle(title);
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>
+      try {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+      } catch {
+        /* storage unavailable: follow the system theme */
+      }
+    </script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1318" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
-    {noindex && <meta name="robots" content="noindex" />}
-    <title>{pageTitle(title)}</title>
   </head>
   <body>
     <slot />

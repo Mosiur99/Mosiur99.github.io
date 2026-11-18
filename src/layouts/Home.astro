@@ -1,0 +1,81 @@
+---
+import Base from './Base.astro';
+import Footer from '../components/Footer.astro';
+import Sidebar from '../components/Sidebar.astro';
+import type { Profile } from '../content/schemas';
+
+interface Props {
+  profile: Profile;
+}
+
+const { profile } = Astro.props;
+---
+
+<Base>
+  <a class="skip-link" href="#main">
+    Skip to content
+  </a>
+  <div class="shell">
+    <Sidebar profile={profile} />
+    <main id="main">
+      <div class="column">
+        <slot />
+        <Footer />
+      </div>
+    </main>
+  </div>
+</Base>
+
+<style>
+  .shell {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    min-height: 100vh;
+  }
+
+  main {
+    min-width: 0;
+    padding-block: 56px 48px;
+    padding-left: max(56px, env(safe-area-inset-left, 0px));
+    padding-right: max(var(--space-6), env(safe-area-inset-right, 0px));
+  }
+
+  .column {
+    max-width: var(--content-width);
+  }
+
+  .column :global(section) {
+    scroll-margin-top: var(--space-5);
+  }
+
+  .column :global(section + section) {
+    margin-top: var(--space-8);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: var(--space-4);
+    top: -100px;
+    z-index: 10;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  .skip-link:focus {
+    top: var(--space-4);
+  }
+
+  @media (max-width: 1000px) {
+    .shell {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    main {
+      padding-block: 40px 40px;
+      padding-left: max(20px, env(safe-area-inset-left, 0px));
+      padding-right: max(20px, env(safe-area-inset-right, 0px));
+    }
+  }
+</style>
