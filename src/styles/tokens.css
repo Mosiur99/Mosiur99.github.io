@@ -1,0 +1,76 @@
+:root {
+  --color-bg: #ffffff;
+  --color-panel: #f7f8fa;
+  --color-ink: #0f1b2d;
+  --color-text: #2b3442;
+  --color-muted: #5f6b7a;
+  --color-faint: #707b8a;
+  --color-line: #e4e7ec;
+  --color-line-strong: #d3d8df;
+  --color-accent: #1d4ed8;
+  --color-accent-ink: #ffffff;
+  --color-accent-soft: #eef3fe;
+  --color-ok: #15803d;
+
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 0.96875rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.45rem;
+  --text-2xl: 1.6rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --sidebar-width: 320px;
+  --content-width: 740px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-bg: #0f1318;
+    --color-panel: #151a21;
+    --color-ink: #f1f4f8;
+    --color-text: #d3d9e1;
+    --color-muted: #9aa5b3;
+    --color-faint: #8a95a4;
+    --color-line: #252c36;
+    --color-line-strong: #323a46;
+    --color-accent: #7aa2ff;
+    --color-accent-ink: #0f1318;
+    --color-accent-soft: #1a2440;
+    --color-ok: #4ade80;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #0f1318;
+  --color-panel: #151a21;
+  --color-ink: #f1f4f8;
+  --color-text: #d3d9e1;
+  --color-muted: #9aa5b3;
+  --color-faint: #8a95a4;
+  --color-line: #252c36;
+  --color-line-strong: #323a46;
+  --color-accent: #7aa2ff;
+  --color-accent-ink: #0f1318;
+  --color-accent-soft: #1a2440;
+  --color-ok: #4ade80;
+  color-scheme: dark;
+}

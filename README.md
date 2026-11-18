@@ -42,8 +42,11 @@ The first time you run end-to-end tests, install the browser with `npx playwrigh
 
 ```text
 src/
-  lib/        shared TypeScript (site data, helpers)
-  pages/      routes
+  components/ reusable UI (Button, Tag, Icon, SectionHeading)
+  layouts/    page shells
+  lib/        shared TypeScript (site data, icons, helpers)
+  pages/      routes (/styleguide shows every token and component)
+  styles/     design tokens and global styles
 public/       static files served as-is
 tests/
   unit/       Vitest tests
