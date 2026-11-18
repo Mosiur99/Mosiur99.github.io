@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-11-18T17:12:39.765Z",
-  "totalSolved": 1933,
+  "fetchedAt": "2026-11-18T17:22:24.453Z",
+  "totalSolved": 3336,
   "platforms": [
     {
       "platform": "codeforces",
@@ -11,16 +11,67 @@
       "maxRating": 1434,
       "rank": "pupil",
       "source": "api",
-      "asOf": "2026-11-18T17:12:39.765Z"
+      "asOf": "2026-11-18T17:22:24.453Z"
+    },
+    {
+      "platform": "atcoder",
+      "handle": "L_nai",
+      "url": "https://atcoder.jp/users/L_nai",
+      "solved": 479,
+      "rating": 747,
+      "maxRating": 928,
+      "source": "api",
+      "asOf": "2026-11-18T17:22:24.453Z"
+    },
+    {
+      "platform": "codechef",
+      "handle": "mosiur_420",
+      "url": "https://www.codechef.com/users/mosiur_420",
+      "solved": 403,
+      "maxRating": 1889,
+      "source": "manual",
+      "asOf": "2026-11-01T00:00:00.000Z"
     },
     {
       "platform": "leetcode",
       "handle": "mosiur",
-      "url": "https://leetcode.com/mosiur",
+      "url": "https://leetcode.com/u/mosiur/",
       "solved": 327,
       "rating": 1613,
       "source": "api",
-      "asOf": "2026-11-18T17:12:39.765Z"
+      "asOf": "2026-11-18T17:22:24.453Z"
+    },
+    {
+      "platform": "uva",
+      "handle": "1029983",
+      "url": "https://uhunt.onlinejudge.org/id/1029983",
+      "solved": 235,
+      "source": "api",
+      "asOf": "2026-11-18T17:22:24.453Z"
+    },
+    {
+      "platform": "spoj",
+      "handle": "thiefthief",
+      "url": "https://www.spoj.com/users/thiefthief/",
+      "solved": 114,
+      "source": "manual",
+      "asOf": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "platform": "lightoj",
+      "handle": "mosiur",
+      "url": "https://lightoj.com/user/mosiur",
+      "solved": 109,
+      "source": "manual",
+      "asOf": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "platform": "timus",
+      "handle": "295370",
+      "url": "https://acm.timus.ru/author.aspx?id=295370",
+      "solved": 63,
+      "source": "manual",
+      "asOf": "2026-11-01T00:00:00.000Z"
     }
   ],
   "codeforcesHistory": [

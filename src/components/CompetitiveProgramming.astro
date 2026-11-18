@@ -1,0 +1,233 @@
+---
+import RatingChart from './RatingChart.astro';
+import SectionHeading from './SectionHeading.astro';
+import type { Achievement } from '../content/schemas';
+import { codeforcesRank } from '../lib/chart';
+import { platformNames } from '../lib/cp/platforms';
+import type { CpStats } from '../lib/cp/types';
+import { formatMonth } from '../lib/dates';
+
+interface Props {
+  stats: CpStats;
+  achievements: Achievement[];
+}
+
+const { stats, achievements } = Astro.props;
+const codeforces = stats.platforms.find((p) => p.platform === 'codeforces');
+const platforms = [...stats.platforms].sort((a, b) => b.solved - a.solved);
+const month = (iso: string) => formatMonth(iso.slice(0, 7));
+const live = platforms.filter((p) => p.source === 'api').map((p) => platformNames[p.platform]);
+const byHand = platforms.filter((p) => p.source !== 'api');
+const results = [...achievements].sort((a, b) => (b.endYear ?? b.year) - (a.endYear ?? a.year));
+const years = (a: Achievement) => (a.endYear ? `${a.year} – ${a.endYear}` : String(a.year));
+---
+
+<section id="cp" aria-labelledby="cp-title">
+  <SectionHeading id="cp-title" title="Competitive programming">
+    Updated {month(stats.fetchedAt)}
+  </SectionHeading>
+
+  <div class="grid">
+    {codeforces && stats.codeforcesHistory.length > 0 && (
+      <div class="box">
+        <h3>Codeforces rating</h3>
+        <p class="sub">
+          {codeforces.maxRating && (
+            <span>
+              <i
+                class="dot"
+                style={`background: ${codeforcesRank(codeforces.maxRating).color}`}
+                aria-hidden="true"
+              />
+              Max {codeforces.maxRating} ({codeforcesRank(codeforces.maxRating).name})
+            </span>
+          )}
+          {codeforces.rating && (
+            <span>
+              · Now {codeforces.rating} · {stats.codeforcesHistory.length} contests
+            </span>
+          )}
+        </p>
+        <RatingChart history={stats.codeforcesHistory} />
+      </div>
+    )}
+
+    <div class="box">
+      <h3>Problems solved</h3>
+      <table class="solved">
+        <caption class="visually-hidden">Problems solved on each online judge</caption>
+        <tbody>
+          {platforms.map((p) => (
+            <tr>
+              <th scope="row">
+                <a href={p.url} target="_blank" rel="noopener noreferrer">
+                  {platformNames[p.platform]}
+                </a>
+                {p.source === 'cached' && (
+                  <span class="note" title={`Last updated ${month(p.asOf)}`}>
+                    {' '}
+                    (cached)
+                  </span>
+                )}
+              </th>
+              <td>{p.solved.toLocaleString('en-US')}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">Total</th>
+            <td>{stats.totalSolved.toLocaleString('en-US')}</td>
+          </tr>
+        </tfoot>
+      </table>
+      <p class="source">
+        {live.join(', ')} update daily.
+        {byHand.length > 0 &&
+          ` ${byHand.map((p) => platformNames[p.platform]).join(', ')} as of ${month(byHand[0]?.asOf ?? stats.fetchedAt)}.`}
+      </p>
+    </div>
+  </div>
+
+  <h3 class="results-title">Contests, problem setting and mentoring</h3>
+  <ul class="results">
+    {results.map((a) => (
+      <li>
+        <span class="year">{years(a)}</span>
+        <span class="what">{a.title}</span>
+        <span class="result">{a.result}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 250px;
+    align-items: start;
+    gap: 14px;
+  }
+
+  .box {
+    min-width: 0;
+    padding: 18px 20px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .sub {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 6px;
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+  }
+
+  .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 6px;
+    border-radius: 50%;
+  }
+
+  .solved {
+    width: 100%;
+    margin-top: 6px;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .solved th,
+  .solved td {
+    padding: 7px 0;
+    border-bottom: 1px solid var(--color-line);
+    font-weight: 400;
+    text-align: left;
+  }
+
+  .solved td {
+    font-family: var(--font-mono);
+    text-align: right;
+  }
+
+  .solved a {
+    color: var(--color-ink);
+  }
+
+  .solved tfoot th,
+  .solved tfoot td {
+    border-bottom: 0;
+    padding-top: 10px;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .note,
+  .source {
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+  }
+
+  .source {
+    margin-top: var(--space-2);
+  }
+
+  .results-title {
+    margin: var(--space-6) 0 var(--space-3);
+  }
+
+  .results {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .results li {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) auto;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding: 12px 18px;
+  }
+
+  .results li + li {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .year {
+    color: var(--color-muted);
+    font: var(--text-xs) var(--font-mono);
+  }
+
+  .what {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  .result {
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+  }
+
+  @media (max-width: 760px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .results li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+  }
+</style>

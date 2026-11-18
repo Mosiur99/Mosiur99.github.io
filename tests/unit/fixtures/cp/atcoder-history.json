@@ -1,0 +1,37 @@
+[
+  {
+    "IsRated": false,
+    "NewRating": 0,
+    "OldRating": 0,
+    "EndTime": "2019-12-29T21:40:00+09:00",
+    "ContestName": "AtCoder Beginner Contest 149"
+  },
+  {
+    "IsRated": true,
+    "NewRating": 40,
+    "OldRating": 0,
+    "EndTime": "2020-01-12T22:40:00+09:00",
+    "ContestName": "AtCoder Beginner Contest 151"
+  },
+  {
+    "IsRated": false,
+    "NewRating": 0,
+    "OldRating": 0,
+    "EndTime": "2019-12-29T21:40:00+09:00",
+    "ContestName": "AtCoder Beginner Contest 149"
+  },
+  {
+    "IsRated": false,
+    "NewRating": 826,
+    "OldRating": 826,
+    "EndTime": "2024-07-06T22:40:00+09:00",
+    "ContestName": "\u30c7\u30f3\u30bd\u30fc\u30af\u30ea\u30a8\u30a4\u30c8\u30d7\u30ed\u30b0\u30e9\u30df\u30f3\u30b0\u30b3\u30f3\u30c6\u30b9\u30c82024\uff08AtCoder Beginner Contest 361\uff09"
+  },
+  {
+    "IsRated": true,
+    "NewRating": 747,
+    "OldRating": 826,
+    "EndTime": "2026-01-03T22:40:00+09:00",
+    "ContestName": "AtCoder Beginner Contest 439\uff08Promotion of AtCoderJobs\uff09"
+  }
+]

@@ -2,7 +2,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import { countSolved, fetchCodeforces } from '../../src/lib/cp/codeforces';
+import { fetchAtCoder, parseAtCoder } from '../../src/lib/cp/atcoder';
 import { fetchLeetCode, parseLeetCode } from '../../src/lib/cp/leetcode';
+import { fetchUva, parseUva } from '../../src/lib/cp/uva';
 
 const fixture = (name: string): unknown =>
   JSON.parse(readFileSync(join(import.meta.dirname, 'fixtures/cp', name), 'utf8'));
@@ -106,5 +108,39 @@ describe('LeetCode', () => {
     expect(url).toBe('https://leetcode.com/graphql');
     expect(init.method).toBe('POST');
     expect(JSON.parse(init.body as string).variables).toEqual({ username: 'mosiur' });
+  });
+});
+
+describe('AtCoder', () => {
+  it('reads the accepted count and uses only rated contests for ratings', () => {
+    const stats = parseAtCoder(fixture('atcoder-ac-rank.json'), fixture('atcoder-history.json'));
+    expect(stats).toEqual({ solved: 479, rating: 747, maxRating: 747 });
+  });
+
+  it('has no rating before the first rated contest', () => {
+    expect(parseAtCoder({ count: 5 }, [])).toEqual({
+      solved: 5,
+      rating: undefined,
+      maxRating: undefined,
+    });
+  });
+
+  it('calls both endpoints with the encoded user name', async () => {
+    const fetch = vi.fn((url: string) => respond(url.includes('kenkoooo') ? { count: 1 } : []));
+    await fetchAtCoder('L_nai', { retryDelayMs: 0, fetch });
+    expect(fetch.mock.calls.map((c) => c[0])).toEqual([
+      'https://kenkoooo.com/atcoder/atcoder-api/v3/user/ac_rank?user=L_nai',
+      'https://atcoder.jp/users/L_nai/history/json',
+    ]);
+  });
+});
+
+describe('UVa', () => {
+  it('counts each accepted problem once', () => {
+    expect(parseUva(fixture('uva-subs.json'))).toEqual({ solved: 3 });
+  });
+
+  it('rejects a user id that is not a number', async () => {
+    await expect(fetchUva('m_o_s_i_u_r')).rejects.toThrow('UVa: user id must be a number');
   });
 });

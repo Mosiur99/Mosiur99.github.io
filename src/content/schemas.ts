@@ -24,7 +24,19 @@ export const profileSchema = z.object({
     )
     .min(1)
     .max(6),
-  highlights: z.array(z.object({ value: z.string().min(1), label: z.string().min(1) })).length(4),
+  highlights: z
+    .array(
+      z
+        .object({
+          label: z.string().min(1),
+          value: z.string().min(1).optional(),
+          stat: z.enum(['problemsSolved']).optional(),
+        })
+        .refine((h) => (h.value === undefined) !== (h.stat === undefined), {
+          message: 'Give a highlight either a value or a stat, not both',
+        }),
+    )
+    .length(4),
 });
 
 const roleSchema = z
@@ -82,7 +94,16 @@ export const achievementSchema = z
     path: ['endYear'],
   });
 
-export const judgePlatforms = ['codeforces', 'leetcode', 'atcoder', 'codechef'] as const;
+export const judgePlatforms = [
+  'codeforces',
+  'atcoder',
+  'codechef',
+  'leetcode',
+  'uva',
+  'spoj',
+  'lightoj',
+  'timus',
+] as const;
 
 export const judgeSchema = z
   .object({

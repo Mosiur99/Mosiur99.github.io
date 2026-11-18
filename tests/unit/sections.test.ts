@@ -1,15 +1,18 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { beforeAll, describe, expect, it } from 'vitest';
 import About from '../../src/components/About.astro';
+import CompetitiveProgramming from '../../src/components/CompetitiveProgramming.astro';
 import Experience from '../../src/components/Experience.astro';
 import Projects from '../../src/components/Projects.astro';
 import Skills from '../../src/components/Skills.astro';
 import {
+  achievementSchema,
   experienceSchema,
   profileSchema,
   projectSchema,
   skillGroupSchema,
 } from '../../src/content/schemas';
+import type { CpStats } from '../../src/lib/cp/types';
 import { readFrontmatter, readYamlEntries } from './content-loader';
 
 let container: AstroContainer;
@@ -28,11 +31,13 @@ beforeAll(async () => {
 
 describe('About', () => {
   it('shows the lead, summary and all four highlights', async () => {
-    const html = await container.renderToString(About, { props: { profile } });
+    const html = await container.renderToString(About, {
+      props: { profile, stats: { problemsSolved: '3,300+' } },
+    });
     expect(html).toContain(escape(profile.lead));
     profile.summary.forEach((p) => expect(html).toContain(escape(p)));
     expect(html.match(/<dt/g)).toHaveLength(4);
-    expect(html).toContain('3,500+');
+    expect(html).toContain('3,300+');
   });
 });
 
@@ -108,5 +113,75 @@ describe('Skills', () => {
     });
     const names = [...html.matchAll(/<dt[^>]*>([^<]+)<\/dt>/g)].map((m) => m[1]);
     expect(names).toEqual([...groups].sort((a, b) => a.order - b.order).map((g) => g.name));
+  });
+});
+
+describe('CompetitiveProgramming', () => {
+  const asOf = '2026-11-18T12:00:00.000Z';
+  const stats: CpStats = {
+    fetchedAt: asOf,
+    totalSolved: 2100,
+    platforms: [
+      {
+        platform: 'leetcode',
+        handle: 'mosiur',
+        url: 'https://leetcode.com/u/mosiur/',
+        solved: 300,
+        source: 'cached',
+        asOf: '2026-10-02T00:00:00.000Z',
+      },
+      {
+        platform: 'codeforces',
+        handle: 'mosiur_zaman',
+        url: 'https://codeforces.com/profile/mosiur_zaman',
+        solved: 1600,
+        rating: 1240,
+        maxRating: 1434,
+        source: 'api',
+        asOf,
+      },
+      {
+        platform: 'timus',
+        handle: '295370',
+        url: 'https://acm.timus.ru/author.aspx?id=295370',
+        solved: 200,
+        source: 'manual',
+        asOf: '2026-11-01T00:00:00.000Z',
+      },
+    ],
+    codeforcesHistory: [
+      { contestId: 1, contestName: 'Round A', date: '2020-01-01T00:00:00.000Z', rating: 1300 },
+      { contestId: 2, contestName: 'Round B', date: '2022-01-01T00:00:00.000Z', rating: 1434 },
+    ],
+  };
+  const achievements = readYamlEntries('achievements.yaml').map(([, data]) =>
+    achievementSchema.parse(data),
+  );
+  const render = () =>
+    container.renderToString(CompetitiveProgramming, { props: { stats, achievements } });
+
+  it('lists platforms by solved count with the total', async () => {
+    const html = await render();
+    const order = ['Codeforces', 'LeetCode', 'Timus'].map((name) => html.indexOf(`>${name}<`));
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+    expect(html).toContain('2,100');
+  });
+
+  it('marks cached values and says which platforms update daily', async () => {
+    const html = await render();
+    expect(html).toContain('(cached)');
+    expect(html).toContain('Codeforces update daily.');
+    expect(html).toContain('LeetCode, Timus as of Oct 2026.');
+  });
+
+  it('describes the rating chart for screen readers', async () => {
+    const html = await render();
+    expect(html).toContain('Peak 1434 (Specialist) in Jan 2022');
+    expect(html).toContain('<title id="rating-title">Codeforces rating history</title>');
+  });
+
+  it('shows the newest results first', async () => {
+    const html = await render();
+    expect(html.indexOf('UITS Ahmed Zobayer')).toBeLessThan(html.indexOf('ICPC Asia Dhaka'));
   });
 });

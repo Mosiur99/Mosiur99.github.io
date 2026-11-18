@@ -30,14 +30,14 @@ main:
       url: https://codeforces.com/profile/mosiur_zaman
     - kind: leetcode
       label: LeetCode
-      url: https://leetcode.com/mosiur
+      url: https://leetcode.com/u/mosiur/
     - kind: email
       label: Email
       url: mailto:mosiurzzaman99@gmail.com
   highlights:
     - value: 2+ years
       label: Production backend
-    - value: 3,500+
+    - stat: problemsSolved
       label: Problems solved
     - value: 2×
       label: ICPC Dhaka Regional

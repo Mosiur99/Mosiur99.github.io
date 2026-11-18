@@ -3,9 +3,10 @@ import type { Profile } from '../content/schemas';
 
 interface Props {
   profile: Profile;
+  stats: Record<'problemsSolved', string>;
 }
 
-const { profile } = Astro.props;
+const { profile, stats } = Astro.props;
 ---
 
 <section id="about" class="about" aria-label="About">
@@ -17,7 +18,7 @@ const { profile } = Astro.props;
     {profile.highlights.map((item) => (
       <div class="highlight">
         <dt>{item.label}</dt>
-        <dd>{item.value}</dd>
+        <dd>{item.stat ? stats[item.stat] : item.value}</dd>
       </div>
     ))}
   </dl>

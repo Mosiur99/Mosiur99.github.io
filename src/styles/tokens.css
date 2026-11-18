@@ -12,6 +12,14 @@
   --color-accent-soft: #eef3fe;
   --color-ok: #15803d;
 
+  --rank-newbie: #8a8f98;
+  --rank-pupil: #2f9a44;
+  --rank-specialist: #0f9f95;
+  --rank-expert: #3561d6;
+  --rank-cm: #a23ab0;
+  --rank-master: #e08a00;
+  --rank-gm: #d6403a;
+
   --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
 
@@ -55,6 +63,13 @@
     --color-accent-ink: #0f1318;
     --color-accent-soft: #1a2440;
     --color-ok: #4ade80;
+    --rank-newbie: #9aa0aa;
+    --rank-pupil: #4cc26a;
+    --rank-specialist: #2cc7bb;
+    --rank-expert: #6f93ff;
+    --rank-cm: #d070e0;
+    --rank-master: #ffae3d;
+    --rank-gm: #ff6b62;
     color-scheme: dark;
   }
 }
@@ -72,5 +87,12 @@
   --color-accent-ink: #0f1318;
   --color-accent-soft: #1a2440;
   --color-ok: #4ade80;
+  --rank-newbie: #9aa0aa;
+  --rank-pupil: #4cc26a;
+  --rank-specialist: #2cc7bb;
+  --rank-expert: #6f93ff;
+  --rank-cm: #d070e0;
+  --rank-master: #ffae3d;
+  --rank-gm: #ff6b62;
   color-scheme: dark;
 }

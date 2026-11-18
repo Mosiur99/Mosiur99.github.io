@@ -1,10 +1,55 @@
+# Platforms with source: api are refreshed by `npm run fetch-stats`.
+# Platforms with source: manual have no usable public API; update their numbers by hand.
 codeforces:
   platform: codeforces
   handle: mosiur_zaman
   url: https://codeforces.com/profile/mosiur_zaman
   source: api
+atcoder:
+  platform: atcoder
+  handle: L_nai
+  url: https://atcoder.jp/users/L_nai
+  source: api
+codechef:
+  platform: codechef
+  handle: mosiur_420
+  url: https://www.codechef.com/users/mosiur_420
+  source: manual
+  manual:
+    solved: 403
+    maxRating: 1889
+    asOf: 2026-11
 leetcode:
   platform: leetcode
   handle: mosiur
-  url: https://leetcode.com/mosiur
+  url: https://leetcode.com/u/mosiur/
   source: api
+uva:
+  platform: uva
+  handle: '1029983'
+  url: https://uhunt.onlinejudge.org/id/1029983
+  source: api
+spoj:
+  platform: spoj
+  handle: thiefthief
+  url: https://www.spoj.com/users/thiefthief/
+  source: manual
+  manual:
+    solved: 114
+    asOf: 2026-11
+lightoj:
+  platform: lightoj
+  handle: mosiur
+  url: https://lightoj.com/user/mosiur
+  source: manual
+  manual:
+    solved: 109
+    asOf: 2026-11
+timus:
+  platform: timus
+  handle: '295370'
+  url: https://acm.timus.ru/author.aspx?id=295370
+  source: manual
+  manual:
+    solved: 63
+    asOf: 2026-11

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import data from '../../src/data/cp-stats.json' with { type: 'json' };
 
 test.describe('about and experience', () => {
   test.beforeEach(async ({ page }) => {
@@ -7,7 +8,8 @@ test.describe('about and experience', () => {
 
   test('shows the key numbers', async ({ page }) => {
     const about = page.locator('#about');
-    for (const value of ['2+ years', '3,500+', '2×', '142']) {
+    const solved = `${(Math.floor(data.totalSolved / 100) * 100).toLocaleString('en-US')}+`;
+    for (const value of ['2+ years', solved, '2×', '142']) {
       await expect(about.getByText(value, { exact: true })).toBeVisible();
     }
   });

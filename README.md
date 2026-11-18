@@ -72,9 +72,18 @@ wrong date stops the build with a message naming the file and the field.
 
 ## Competitive programming stats
 
-`npm run fetch-stats` reads the profiles in `src/content/judges.yaml`, calls the Codeforces API
-and LeetCode's public GraphQL endpoint, and writes `src/data/cp-stats.json`. The file is
-committed, so the site always builds with data.
+`npm run fetch-stats` reads the profiles in `src/content/judges.yaml` and writes
+`src/data/cp-stats.json`. The file is committed, so the site always builds with data.
+
+| Judge                          | Source                                          |
+| ------------------------------ | ----------------------------------------------- |
+| Codeforces                     | Official API (rating, history, solved count)    |
+| AtCoder                        | AtCoder Problems API and AtCoder rating history |
+| LeetCode                       | Public GraphQL endpoint                         |
+| UVa                            | uHunt API                                       |
+| CodeChef, SPOJ, LightOJ, Timus | Manual numbers in `judges.yaml`                 |
+
+The "problems solved" number in the About section is calculated from the same file.
 
 If a platform fails (timeout, error, unexpected response), the last saved value is kept and
 marked `cached`; a platform is never shown as zero. Platforms without an API can be added to

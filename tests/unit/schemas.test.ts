@@ -4,6 +4,7 @@ import {
   experienceSchema,
   judgeSchema,
   postSchema,
+  profileSchema,
   projectSchema,
 } from '../../src/content/schemas';
 
@@ -100,5 +101,34 @@ describe('postSchema', () => {
   it('rejects descriptions longer than a search snippet', () => {
     const bad = { title: 'Hello', description: 'x'.repeat(161), date: '2026-11-18' };
     expect(postSchema.safeParse(bad).success).toBe(false);
+  });
+});
+
+describe('profile highlights', () => {
+  const base = {
+    name: 'N',
+    role: 'R',
+    lead: 'L',
+    summary: ['S'],
+    location: 'Dhaka',
+    employer: { name: 'E', url: 'https://example.com' },
+    availability: 'Open',
+    email: 'me@example.com',
+    cvPath: '/cv.pdf',
+    socials: [{ kind: 'github', label: 'GitHub', url: 'https://github.com/x' }],
+  };
+  const fill = (h: object) => ({ ...base, highlights: [h, h, h, h] });
+
+  it('accepts a fixed value or a stat', () => {
+    expect(profileSchema.safeParse(fill({ label: 'A', value: '1' })).success).toBe(true);
+    expect(profileSchema.safeParse(fill({ label: 'A', stat: 'problemsSolved' })).success).toBe(
+      true,
+    );
+  });
+
+  it('rejects a highlight with both or neither', () => {
+    const both = fill({ label: 'A', value: '1', stat: 'problemsSolved' });
+    expect(profileSchema.safeParse(both).success).toBe(false);
+    expect(profileSchema.safeParse(fill({ label: 'A' })).success).toBe(false);
   });
 });

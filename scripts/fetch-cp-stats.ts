@@ -1,9 +1,11 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { parse } from 'yaml';
 import { judgeSchema } from '../src/content/schemas';
+import { fetchAtCoder } from '../src/lib/cp/atcoder';
 import { fetchCodeforces } from '../src/lib/cp/codeforces';
 import { fetchLeetCode } from '../src/lib/cp/leetcode';
 import { buildStats } from '../src/lib/cp/stats';
+import { fetchUva } from '../src/lib/cp/uva';
 import { cpStatsSchema, type CpStats } from '../src/lib/cp/types';
 
 const JUDGES = 'src/content/judges.yaml';
@@ -26,6 +28,8 @@ const judges = Object.values(parse(readFileSync(JUDGES, 'utf8')) as Record<strin
 const { stats, warnings } = await buildStats(judges, readPrevious(), {
   codeforces: (handle) => fetchCodeforces(handle),
   leetcode: (handle) => fetchLeetCode(handle),
+  atcoder: (handle) => fetchAtCoder(handle),
+  uva: (handle) => fetchUva(handle),
 });
 
 warnings.forEach((warning) => console.warn(`warning: ${warning}`));

@@ -1,11 +1,14 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import About from '../components/About.astro';
+import CompetitiveProgramming from '../components/CompetitiveProgramming.astro';
 import Experience from '../components/Experience.astro';
 import Projects from '../components/Projects.astro';
 import Skills from '../components/Skills.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Home from '../layouts/Home.astro';
+import { roundedLabel } from '../lib/chart';
+import { cpStats } from '../lib/cp/load';
 import { sections } from '../lib/sections';
 
 const entry = await getEntry('profile', 'main');
@@ -14,17 +17,19 @@ const profile = entry.data;
 const companies = (await getCollection('experience')).map((company) => company.data);
 const projects = (await getCollection('projects')).map((project) => project.data);
 const skills = (await getCollection('skills')).map((group) => group.data);
+const achievements = (await getCollection('achievements')).map((item) => item.data);
 const github = profile.socials.find((social) => social.kind === 'github');
 if (!github) throw new Error('profile.yaml needs a GitHub link');
 
-const built = new Set(['about', 'experience', 'projects', 'skills']);
+const built = new Set(['about', 'experience', 'projects', 'skills', 'cp']);
 ---
 
 <Home profile={profile}>
-  <About profile={profile} />
+  <About profile={profile} stats={{ problemsSolved: roundedLabel(cpStats.totalSolved) }} />
   <Experience companies={companies} />
   <Projects projects={projects} allReposUrl={`${github.url}?tab=repositories`} />
   <Skills groups={skills} />
+  <CompetitiveProgramming stats={cpStats} achievements={achievements} />
   {sections
     .filter((section) => !built.has(section.id))
     .map((section) => (
