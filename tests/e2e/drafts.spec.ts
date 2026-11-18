@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { watchCsp } from './csp';
 
 const slug = '/blog/idempotency-keys-in-payledger/';
 
@@ -47,4 +48,10 @@ test.describe('draft preview build', () => {
       expect(results.violations).toEqual([]);
     });
   }
+
+  test('post page loads without Content Security Policy violations', async ({ page }) => {
+    const violations = await watchCsp(page);
+    await page.goto(slug);
+    expect(await violations()).toEqual([]);
+  });
 });

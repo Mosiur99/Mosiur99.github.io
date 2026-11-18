@@ -35,8 +35,7 @@ const years = (a: Achievement) => (a.endYear ? `${a.year} – ${a.endYear}` : St
           {codeforces.maxRating && (
             <span>
               <i
-                class="dot"
-                style={`background: ${codeforcesRank(codeforces.maxRating).color}`}
+                class={`dot rank-${codeforcesRank(codeforces.maxRating).slug}`}
                 aria-hidden="true"
               />
               Max {codeforces.maxRating} ({codeforcesRank(codeforces.maxRating).name})
@@ -127,6 +126,34 @@ const years = (a: Achievement) => (a.endYear ? `${a.year} – ${a.endYear}` : St
     gap: 0 6px;
     color: var(--color-muted);
     font-size: var(--text-xs);
+  }
+
+  .rank-newbie {
+    background: var(--rank-newbie);
+  }
+
+  .rank-pupil {
+    background: var(--rank-pupil);
+  }
+
+  .rank-specialist {
+    background: var(--rank-specialist);
+  }
+
+  .rank-expert {
+    background: var(--rank-expert);
+  }
+
+  .rank-cm {
+    background: var(--rank-cm);
+  }
+
+  .rank-master {
+    background: var(--rank-master);
+  }
+
+  .rank-gm {
+    background: var(--rank-gm);
   }
 
   .dot {

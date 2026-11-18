@@ -2,20 +2,27 @@ import type { RatingPoint } from './cp/types';
 
 export interface Rank {
   name: string;
+  slug: string;
   min: number;
   max: number;
   color: string;
 }
 
-const topRank: Rank = { name: 'Grandmaster', min: 2400, max: 5000, color: 'var(--rank-gm)' };
+const topRank: Rank = {
+  name: 'Grandmaster',
+  slug: 'gm',
+  min: 2400,
+  max: 5000,
+  color: 'var(--rank-gm)',
+};
 
 export const codeforcesRanks: Rank[] = [
-  { name: 'Newbie', min: 0, max: 1200, color: 'var(--rank-newbie)' },
-  { name: 'Pupil', min: 1200, max: 1400, color: 'var(--rank-pupil)' },
-  { name: 'Specialist', min: 1400, max: 1600, color: 'var(--rank-specialist)' },
-  { name: 'Expert', min: 1600, max: 1900, color: 'var(--rank-expert)' },
-  { name: 'Candidate Master', min: 1900, max: 2100, color: 'var(--rank-cm)' },
-  { name: 'Master', min: 2100, max: 2400, color: 'var(--rank-master)' },
+  { name: 'Newbie', slug: 'newbie', min: 0, max: 1200, color: 'var(--rank-newbie)' },
+  { name: 'Pupil', slug: 'pupil', min: 1200, max: 1400, color: 'var(--rank-pupil)' },
+  { name: 'Specialist', slug: 'specialist', min: 1400, max: 1600, color: 'var(--rank-specialist)' },
+  { name: 'Expert', slug: 'expert', min: 1600, max: 1900, color: 'var(--rank-expert)' },
+  { name: 'Candidate Master', slug: 'cm', min: 1900, max: 2100, color: 'var(--rank-cm)' },
+  { name: 'Master', slug: 'master', min: 2100, max: 2400, color: 'var(--rank-master)' },
   topRank,
 ];
 

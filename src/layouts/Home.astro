@@ -8,12 +8,13 @@ import type { Section } from '../lib/sections';
 interface Props {
   profile: Profile;
   sections: Section[];
+  jsonLd?: object;
 }
 
-const { profile, sections } = Astro.props;
+const { profile, sections, jsonLd } = Astro.props;
 ---
 
-<Base>
+<Base jsonLd={jsonLd}>
   <a class="skip-link" href="#main">
     Skip to content
   </a>

@@ -1,0 +1,26 @@
+---
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="Page not found" noindex>
+  <h1>Page not found</h1>
+  <p>The page you are looking for does not exist or has moved.</p>
+  <p class="links">
+    <a href="/">Go to the home page</a> · <a href="/blog/">Read the blog</a>
+  </p>
+</Page>
+
+<style>
+  h1 {
+    font-size: var(--text-2xl);
+  }
+
+  p {
+    margin-top: var(--space-3);
+    color: var(--color-muted);
+  }
+
+  .links {
+    margin-top: var(--space-5);
+  }
+</style>

@@ -57,10 +57,23 @@ jobs:
       - name: End-to-end tests
         run: npm run test:e2e
 
-      - name: Upload Playwright report
+      - name: Lighthouse (desktop and mobile)
+        run: |
+          npx lhci autorun --config=lighthouserc.json
+          npx lhci autorun --config=lighthouserc.mobile.json
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --config lychee.toml --root-dir ${{ github.workspace }}/dist --no-progress 'dist/**/*.html'
+          fail: true
+
+      - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: reports
+          path: |
+            playwright-report/
+            lighthouse-report/
           retention-days: 7

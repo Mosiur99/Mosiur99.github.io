@@ -199,6 +199,39 @@ const toc = headings.filter((heading) => heading.depth === 2);
     background: none;
   }
 
+  .prose :global(.token.comment),
+  .prose :global(.token.prolog) {
+    color: var(--color-muted);
+    font-style: italic;
+  }
+
+  .prose :global(.token.keyword),
+  .prose :global(.token.boolean),
+  .prose :global(.token.important) {
+    color: var(--rank-cm);
+  }
+
+  .prose :global(.token.string),
+  .prose :global(.token.char),
+  .prose :global(.token.attr-value) {
+    color: var(--rank-pupil);
+  }
+
+  .prose :global(.token.number),
+  .prose :global(.token.constant) {
+    color: var(--rank-master);
+  }
+
+  .prose :global(.token.function),
+  .prose :global(.token.class-name) {
+    color: var(--color-accent);
+  }
+
+  .prose :global(.token.punctuation),
+  .prose :global(.token.operator) {
+    color: var(--color-muted);
+  }
+
   .prose :global(table) {
     display: block;
     width: 100%;

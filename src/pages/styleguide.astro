@@ -35,7 +35,7 @@ const iconNames = Object.keys(icons) as IconName[];
       <ul class="swatches">
         {colors.map((name) => (
           <li>
-            <span class="swatch" style={`background: var(--color-${name})`} />
+            <span class={`swatch swatch-${name}`} />
             <code>--color-{name}</code>
           </li>
         ))}
@@ -46,7 +46,7 @@ const iconNames = Object.keys(icons) as IconName[];
       <SectionHeading id="type" title="Type scale" />
       <ul class="type">
         {sizes.map((size) => (
-          <li style={`font-size: var(--text-${size})`}>
+          <li class={`size-${size}`}>
             <code>--text-{size}</code> Backend Software Engineer
           </li>
         ))}
@@ -142,6 +142,74 @@ const iconNames = Object.keys(icons) as IconName[];
     height: 28px;
     border: 1px solid var(--color-line-strong);
     border-radius: var(--radius-sm);
+  }
+
+  .swatch-bg {
+    background: var(--color-bg);
+  }
+
+  .swatch-panel {
+    background: var(--color-panel);
+  }
+
+  .swatch-ink {
+    background: var(--color-ink);
+  }
+
+  .swatch-text {
+    background: var(--color-text);
+  }
+
+  .swatch-muted {
+    background: var(--color-muted);
+  }
+
+  .swatch-faint {
+    background: var(--color-faint);
+  }
+
+  .swatch-line {
+    background: var(--color-line);
+  }
+
+  .swatch-line-strong {
+    background: var(--color-line-strong);
+  }
+
+  .swatch-accent {
+    background: var(--color-accent);
+  }
+
+  .swatch-accent-soft {
+    background: var(--color-accent-soft);
+  }
+
+  .swatch-ok {
+    background: var(--color-ok);
+  }
+
+  .size-xs {
+    font-size: var(--text-xs);
+  }
+
+  .size-sm {
+    font-size: var(--text-sm);
+  }
+
+  .size-base {
+    font-size: var(--text-base);
+  }
+
+  .size-lg {
+    font-size: var(--text-lg);
+  }
+
+  .size-xl {
+    font-size: var(--text-xl);
+  }
+
+  .size-2xl {
+    font-size: var(--text-2xl);
   }
 
   .type {

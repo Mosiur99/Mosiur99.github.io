@@ -13,6 +13,7 @@ import { getPosts } from '../lib/blog';
 import { roundedLabel } from '../lib/chart';
 import { cpStats } from '../lib/cp/load';
 import { visibleSections } from '../lib/sections';
+import { personJsonLd } from '../lib/structured-data';
 
 const entry = await getEntry('profile', 'main');
 if (!entry) throw new Error('src/content/profile.yaml must have a "main" entry');
@@ -34,7 +35,11 @@ const github = profile.socials.find((social) => social.kind === 'github');
 if (!github) throw new Error('profile.yaml needs a GitHub link');
 ---
 
-<Home profile={profile} sections={visibleSections({ hasPosts: posts.length > 0 })}>
+<Home
+  profile={profile}
+  sections={visibleSections({ hasPosts: posts.length > 0 })}
+  jsonLd={personJsonLd(profile, companies, education)}
+>
   <About profile={profile} stats={{ problemsSolved: roundedLabel(cpStats.totalSolved) }} />
   <Experience companies={companies} />
   <Projects projects={projects} allReposUrl={`${github.url}?tab=repositories`} />
