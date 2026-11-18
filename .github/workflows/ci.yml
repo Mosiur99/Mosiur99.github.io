@@ -37,8 +37,22 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Read Playwright version
+        id: playwright
+        run: echo "version=$(npx playwright --version | cut -d' ' -f2)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browser
+        id: playwright-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      # The Ubuntu runner already has the system libraries Chromium needs,
+      # so the slow apt-based --with-deps install is skipped.
       - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium
 
       - name: End-to-end tests
         run: npm run test:e2e

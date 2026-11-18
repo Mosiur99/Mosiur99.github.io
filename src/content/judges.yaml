@@ -1,0 +1,10 @@
+codeforces:
+  platform: codeforces
+  handle: mosiur_zaman
+  url: https://codeforces.com/profile/mosiur_zaman
+  source: api
+leetcode:
+  platform: leetcode
+  handle: mosiur
+  url: https://leetcode.com/mosiur
+  source: api

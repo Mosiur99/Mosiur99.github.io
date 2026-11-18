@@ -43,6 +43,7 @@ The first time you run end-to-end tests, install the browser with `npx playwrigh
 ```text
 src/
   components/ reusable UI (Button, Tag, Icon, SectionHeading)
+  content/    site content (YAML and Markdown) and its Zod schemas
   layouts/    page shells
   lib/        shared TypeScript (site data, icons, helpers)
   pages/      routes (/styleguide shows every token and component)
@@ -52,3 +53,19 @@ tests/
   unit/       Vitest tests
   e2e/        Playwright tests
 ```
+
+## Editing content
+
+All text on the site lives in `src/content/`:
+
+| File                | Content                                     |
+| ------------------- | ------------------------------------------- |
+| `profile.yaml`      | Name, intro, location, links, key numbers   |
+| `experience.yaml`   | Companies and roles (dates as `YYYY-MM`)    |
+| `projects/*.md`     | One file per project; one may be `featured` |
+| `skills.yaml`       | Skill groups                                |
+| `achievements.yaml` | Contest results, problem setting, mentoring |
+| `judges.yaml`       | Competitive programming profiles            |
+
+Each file is checked against the schemas in `src/content/schemas.ts`. A missing field or a
+wrong date stops the build with a message naming the file and the field.

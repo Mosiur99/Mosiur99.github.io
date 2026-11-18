@@ -1,0 +1,25 @@
+rokomari:
+  company: Rokomari.com
+  url: https://www.rokomari.com
+  industry: E-commerce
+  location: Dhaka, Bangladesh
+  order: 1
+  roles:
+    - title: Junior Software Engineer, Backend
+      start: 2024-07
+      end: null
+      bullets:
+        - >-
+          Build backend features for a large e-commerce platform, including event pipelines,
+          caching, product search, payments and role-based access control.
+        - >-
+          Design event-driven processing with Kafka and RabbitMQ for activity tracking and
+          asynchronous audit logging.
+        - >-
+          Improve slow reports and batch jobs using keyset pagination, chunked processing, index
+          tuning and better algorithms.
+        - Write unit and integration tests and take part in code review.
+      tools: [Java, Spring Boot, MySQL, Redis, RabbitMQ, Kafka, Elasticsearch]
+    - title: Software Engineer Intern
+      start: 2024-03
+      end: 2024-06
