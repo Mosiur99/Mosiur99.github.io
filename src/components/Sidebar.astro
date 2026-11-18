@@ -91,6 +91,10 @@ const { profile, sections } = Astro.props;
     padding: 40px var(--space-6) 28px max(var(--space-6), env(safe-area-inset-left, 0px));
   }
 
+  .inner > * {
+    flex-shrink: 0;
+  }
+
   .photo {
     display: grid;
     place-items: center;

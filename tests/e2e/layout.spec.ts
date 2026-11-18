@@ -129,3 +129,23 @@ test.describe('page basics', () => {
     });
   }
 });
+
+test.describe('short windows and larger text', () => {
+  test.use({ viewport: { width: 1280, height: 560 } });
+
+  test('keeps the photo square and lets the sidebar scroll', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'The sidebar is a header on phones');
+    await page.goto('/');
+    // Like a larger default font size in the browser settings (CSSOM changes are allowed by the CSP).
+    await page.evaluate(() => (document.documentElement.style.fontSize = '125%'));
+    const photo = await page.locator('.sidebar .photo').boundingBox();
+    if (!photo) throw new Error('photo is not rendered');
+    expect(photo.width).toBe(photo.height);
+    const fits = await page
+      .locator('.sidebar .inner')
+      .evaluate(
+        (el) => el.scrollHeight > el.clientHeight && getComputedStyle(el).overflowY === 'auto',
+      );
+    expect(fits).toBe(true);
+  });
+});
