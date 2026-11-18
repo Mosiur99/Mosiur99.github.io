@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   achievementSchema,
+  educationSchema,
   experienceSchema,
   judgeSchema,
   profileSchema,
@@ -17,6 +18,7 @@ describe('content files', () => {
     ['achievements.yaml', achievementSchema],
     ['judges.yaml', judgeSchema],
     ['skills.yaml', skillGroupSchema],
+    ['education.yaml', educationSchema],
   ] as const)('%s matches its schema', (file, schema) => {
     const entries = readYamlEntries(file);
     expect(entries.length).toBeGreaterThan(0);

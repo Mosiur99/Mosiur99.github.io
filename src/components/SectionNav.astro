@@ -1,5 +1,11 @@
 ---
-import { sections } from '../lib/sections';
+import type { Section } from '../lib/sections';
+
+interface Props {
+  sections: Section[];
+}
+
+const { sections } = Astro.props;
 ---
 
 <nav class="section-nav" aria-label="Sections">

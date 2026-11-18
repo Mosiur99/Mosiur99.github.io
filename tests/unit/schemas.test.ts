@@ -113,6 +113,7 @@ describe('profile highlights', () => {
     location: 'Dhaka',
     employer: { name: 'E', url: 'https://example.com' },
     availability: 'Open',
+    contact: 'Email me',
     email: 'me@example.com',
     cvPath: '/cv.pdf',
     socials: [{ kind: 'github', label: 'GitHub', url: 'https://github.com/x' }],

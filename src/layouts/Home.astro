@@ -3,12 +3,14 @@ import Base from './Base.astro';
 import Footer from '../components/Footer.astro';
 import Sidebar from '../components/Sidebar.astro';
 import type { Profile } from '../content/schemas';
+import type { Section } from '../lib/sections';
 
 interface Props {
   profile: Profile;
+  sections: Section[];
 }
 
-const { profile } = Astro.props;
+const { profile, sections } = Astro.props;
 ---
 
 <Base>
@@ -16,7 +18,7 @@ const { profile } = Astro.props;
     Skip to content
   </a>
   <div class="shell">
-    <Sidebar profile={profile} />
+    <Sidebar profile={profile} sections={sections} />
     <main id="main">
       <div class="column">
         <slot />

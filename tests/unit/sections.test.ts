@@ -2,11 +2,15 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { beforeAll, describe, expect, it } from 'vitest';
 import About from '../../src/components/About.astro';
 import CompetitiveProgramming from '../../src/components/CompetitiveProgramming.astro';
+import Contact from '../../src/components/Contact.astro';
+import Education from '../../src/components/Education.astro';
 import Experience from '../../src/components/Experience.astro';
 import Projects from '../../src/components/Projects.astro';
 import Skills from '../../src/components/Skills.astro';
+import Writing from '../../src/components/Writing.astro';
 import {
   achievementSchema,
+  educationSchema,
   experienceSchema,
   profileSchema,
   projectSchema,
@@ -183,5 +187,47 @@ describe('CompetitiveProgramming', () => {
   it('shows the newest results first', async () => {
     const html = await render();
     expect(html.indexOf('UITS Ahmed Zobayer')).toBeLessThan(html.indexOf('ICPC Asia Dhaka'));
+  });
+});
+
+describe('Education', () => {
+  it('shows the degree, institution link and years', async () => {
+    const items = readYamlEntries('education.yaml').map(([, data]) => educationSchema.parse(data));
+    const html = await container.renderToString(Education, { props: { items } });
+    expect(html).toContain('B.Sc. in Computer Science and Telecommunication Engineering');
+    expect(html).toMatch(/href="https:\/\/nstu\.edu\.bd"[^>]*target="_blank"/);
+    expect(html).toContain('2019 – 2024');
+  });
+});
+
+describe('Contact', () => {
+  it('shows the email as text with copy, mail and LinkedIn actions', async () => {
+    const html = await container.renderToString(Contact, { props: { profile } });
+    expect(html).toContain(`>${profile.email}</code>`);
+    expect(html).toContain('data-copy-email');
+    expect(html).toContain(`href="mailto:${profile.email}"`);
+    expect(html).toContain('linkedin.com/in/');
+    expect(html).toContain('role="status"');
+  });
+});
+
+describe('Writing', () => {
+  it('shows the three newest posts', async () => {
+    const post = (slug: string, date: string) => ({
+      slug,
+      title: `Post ${slug}`,
+      description: 'About it',
+      date: new Date(date),
+    });
+    const posts = [
+      post('a', '2026-01-01'),
+      post('d', '2026-04-01'),
+      post('b', '2026-02-01'),
+      post('c', '2026-03-01'),
+    ];
+    const html = await container.renderToString(Writing, { props: { posts } });
+    const slugs = [...html.matchAll(/href="\/blog\/(\w)\/"/g)].map((m) => m[1]);
+    expect(slugs).toEqual(['d', 'c', 'b']);
+    expect(html).toContain('Apr 2026');
   });
 });

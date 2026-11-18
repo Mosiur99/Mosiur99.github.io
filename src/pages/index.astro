@@ -2,39 +2,39 @@
 import { getCollection, getEntry } from 'astro:content';
 import About from '../components/About.astro';
 import CompetitiveProgramming from '../components/CompetitiveProgramming.astro';
+import Contact from '../components/Contact.astro';
+import Education from '../components/Education.astro';
 import Experience from '../components/Experience.astro';
 import Projects from '../components/Projects.astro';
 import Skills from '../components/Skills.astro';
-import SectionHeading from '../components/SectionHeading.astro';
+import Writing, { type PostSummary } from '../components/Writing.astro';
 import Home from '../layouts/Home.astro';
 import { roundedLabel } from '../lib/chart';
 import { cpStats } from '../lib/cp/load';
-import { sections } from '../lib/sections';
+import { visibleSections } from '../lib/sections';
 
 const entry = await getEntry('profile', 'main');
 if (!entry) throw new Error('src/content/profile.yaml must have a "main" entry');
 const profile = entry.data;
-const companies = (await getCollection('experience')).map((company) => company.data);
-const projects = (await getCollection('projects')).map((project) => project.data);
-const skills = (await getCollection('skills')).map((group) => group.data);
-const achievements = (await getCollection('achievements')).map((item) => item.data);
+const data = async <T,>(items: Promise<{ data: T }[]>) => (await items).map((item) => item.data);
+const companies = await data(getCollection('experience'));
+const projects = await data(getCollection('projects'));
+const skills = await data(getCollection('skills'));
+const achievements = await data(getCollection('achievements'));
+const education = await data(getCollection('education'));
+const posts: PostSummary[] = [];
+
 const github = profile.socials.find((social) => social.kind === 'github');
 if (!github) throw new Error('profile.yaml needs a GitHub link');
-
-const built = new Set(['about', 'experience', 'projects', 'skills', 'cp']);
 ---
 
-<Home profile={profile}>
+<Home profile={profile} sections={visibleSections({ hasPosts: posts.length > 0 })}>
   <About profile={profile} stats={{ problemsSolved: roundedLabel(cpStats.totalSolved) }} />
   <Experience companies={companies} />
   <Projects projects={projects} allReposUrl={`${github.url}?tab=repositories`} />
   <Skills groups={skills} />
   <CompetitiveProgramming stats={cpStats} achievements={achievements} />
-  {sections
-    .filter((section) => !built.has(section.id))
-    .map((section) => (
-      <section id={section.id} aria-labelledby={`${section.id}-title`}>
-        <SectionHeading id={`${section.id}-title`} title={section.label} />
-      </section>
-    ))}
+  {posts.length > 0 && <Writing posts={posts} />}
+  <Education items={education} />
+  <Contact profile={profile} />
 </Home>

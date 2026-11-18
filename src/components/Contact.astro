@@ -1,0 +1,106 @@
+---
+import Button from './Button.astro';
+import type { Profile } from '../content/schemas';
+
+interface Props {
+  profile: Profile;
+}
+
+const { profile } = Astro.props;
+const linkedin = profile.socials.find((social) => social.kind === 'linkedin');
+---
+
+<section id="contact" aria-labelledby="contact-title">
+  <div class="panel">
+    <h2 id="contact-title">Get in touch</h2>
+    <p class="note">{profile.contact}</p>
+    <div class="actions">
+      <code id="contact-email">{profile.email}</code>
+      <Button icon="copy" data-copy-email>
+        Copy email
+      </Button>
+      <Button variant="primary" icon="mail" href={`mailto:${profile.email}`}>
+        Send email
+      </Button>
+      {linkedin && (
+        <Button href={linkedin.url} external icon="linkedin">
+          LinkedIn
+        </Button>
+      )}
+    </div>
+    <p class="status" role="status" aria-live="polite" data-copy-status></p>
+  </div>
+</section>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  const email = document.getElementById('contact-email');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+
+  function selectEmail() {
+    if (!email) return;
+    const range = document.createRange();
+    range.selectNodeContents(email);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+  }
+
+  button?.addEventListener('click', async () => {
+    if (!email || !status) return;
+    try {
+      await navigator.clipboard.writeText(email.textContent?.trim() ?? '');
+      status.textContent = 'Email address copied';
+    } catch {
+      selectEmail();
+      status.textContent = 'Press Ctrl+C (or Cmd+C) to copy the selected address';
+    }
+  });
+</script>
+
+<style>
+  .panel {
+    padding: 28px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-panel);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .note {
+    max-width: 58ch;
+    margin-top: var(--space-2);
+    color: var(--color-muted);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: 18px;
+  }
+
+  code {
+    padding: 8px 12px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    overflow-wrap: anywhere;
+    user-select: all;
+  }
+
+  .status {
+    min-height: 1.5em;
+    margin-top: var(--space-2);
+    color: var(--color-ok);
+    font-size: var(--text-xs);
+  }
+</style>

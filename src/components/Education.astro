@@ -1,0 +1,98 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import type { Education } from '../content/schemas';
+
+interface Props {
+  items: Education[];
+}
+
+const items = [...Astro.props.items].sort((a, b) => a.order - b.order);
+---
+
+<section id="education" aria-labelledby="education-title">
+  <SectionHeading id="education-title" title="Education" />
+  <ul>
+    {items.map((item) => (
+      <li class="item">
+        <div class="logo" aria-hidden="true">
+          {item.institution.charAt(0)}
+        </div>
+        <div class="text">
+          <h3>{item.degree}</h3>
+          <p>
+            {item.url ? (
+              <a href={item.url} target="_blank" rel="noopener noreferrer">
+                {item.institution}
+              </a>
+            ) : (
+              item.institution
+            )}
+          </p>
+        </div>
+        <span class="years">
+          {item.startYear} – {item.endYear}
+        </span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  ul {
+    display: grid;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .logo {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 10px;
+    background: var(--color-panel);
+    color: var(--color-ink);
+    font-size: var(--text-lg);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+  }
+
+  p a {
+    color: inherit;
+  }
+
+  .years {
+    color: var(--color-muted);
+    font: var(--text-xs) var(--font-mono);
+  }
+
+  @media (max-width: 640px) {
+    .item {
+      grid-template-columns: 48px minmax(0, 1fr);
+      row-gap: 2px;
+    }
+
+    .years {
+      grid-column: 2;
+    }
+  }
+</style>

@@ -16,6 +16,7 @@ export const profileSchema = z.object({
   location: z.string().min(1),
   employer: z.object({ name: z.string().min(1), url: z.url() }),
   availability: z.string().min(1),
+  contact: z.string().min(1).max(240),
   email: z.email(),
   cvPath: sitePath,
   socials: z
@@ -124,6 +125,15 @@ export const judgeSchema = z
     path: ['manual'],
   });
 
+export const educationSchema = z.object({
+  degree: z.string().min(1),
+  institution: z.string().min(1),
+  url: z.url().optional(),
+  startYear: z.number().int().min(1990).max(2100),
+  endYear: z.number().int().min(1990).max(2100),
+  order: z.number().int(),
+});
+
 export const skillGroupSchema = z.object({
   name: z.string().min(1),
   items: z.array(z.string().min(1)).min(1),
@@ -145,4 +155,5 @@ export type Project = z.infer<typeof projectSchema>;
 export type Achievement = z.infer<typeof achievementSchema>;
 export type Judge = z.infer<typeof judgeSchema>;
 export type SkillGroup = z.infer<typeof skillGroupSchema>;
+export type Education = z.infer<typeof educationSchema>;
 export type Post = z.infer<typeof postSchema>;

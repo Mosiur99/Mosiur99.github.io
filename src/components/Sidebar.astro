@@ -4,13 +4,15 @@ import Icon from './Icon.astro';
 import SectionNav from './SectionNav.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import type { Profile } from '../content/schemas';
+import type { Section } from '../lib/sections';
 import { isExternal, socialIcons } from '../lib/socials';
 
 interface Props {
   profile: Profile;
+  sections: Section[];
 }
 
-const { profile } = Astro.props;
+const { profile, sections } = Astro.props;
 ---
 
 <aside class="sidebar">
@@ -48,7 +50,7 @@ const { profile } = Astro.props;
       <Button href="#contact">Contact</Button>
     </div>
 
-    <SectionNav />
+    <SectionNav sections={sections} />
 
     <div class="footer">
       <ul class="socials">

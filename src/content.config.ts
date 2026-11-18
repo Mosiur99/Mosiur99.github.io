@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import {
   achievementSchema,
+  educationSchema,
   experienceSchema,
   judgeSchema,
   profileSchema,
@@ -24,5 +25,9 @@ export const collections = {
     schema: achievementSchema,
   }),
   judges: defineCollection({ loader: file('src/content/judges.yaml'), schema: judgeSchema }),
+  education: defineCollection({
+    loader: file('src/content/education.yaml'),
+    schema: educationSchema,
+  }),
   skills: defineCollection({ loader: file('src/content/skills.yaml'), schema: skillGroupSchema }),
 };
