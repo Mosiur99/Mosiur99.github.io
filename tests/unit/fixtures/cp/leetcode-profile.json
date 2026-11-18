@@ -1,0 +1,32 @@
+{
+  "data": {
+    "matchedUser": {
+      "username": "mosiur",
+      "submitStatsGlobal": {
+        "acSubmissionNum": [
+          {
+            "difficulty": "All",
+            "count": 327
+          },
+          {
+            "difficulty": "Easy",
+            "count": 139
+          },
+          {
+            "difficulty": "Medium",
+            "count": 179
+          },
+          {
+            "difficulty": "Hard",
+            "count": 9
+          }
+        ]
+      }
+    },
+    "userContestRanking": {
+      "rating": 1612.768,
+      "attendedContestsCount": 3,
+      "topPercentage": 22.9
+    }
+  }
+}

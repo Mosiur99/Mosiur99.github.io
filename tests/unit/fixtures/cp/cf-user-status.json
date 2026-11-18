@@ -1,0 +1,64 @@
+{
+  "status": "OK",
+  "result": [
+    {
+      "id": 382544161,
+      "contestId": 2242,
+      "problem": {
+        "contestId": 2242,
+        "index": "A",
+        "name": "Bigrams"
+      },
+      "verdict": "OK"
+    },
+    {
+      "id": 382544162,
+      "contestId": 2242,
+      "problem": {
+        "contestId": 2242,
+        "index": "A",
+        "name": "Bigrams"
+      },
+      "verdict": "OK"
+    },
+    {
+      "id": 325545559,
+      "contestId": 2114,
+      "problem": {
+        "contestId": 2114,
+        "index": "A",
+        "name": "Square Year"
+      },
+      "verdict": "OK"
+    },
+    {
+      "id": 325533406,
+      "contestId": 2116,
+      "problem": {
+        "contestId": 2116,
+        "index": "A",
+        "name": "Gellyfish and Tricolor Pansy"
+      },
+      "verdict": "OK"
+    },
+    {
+      "id": 249136690,
+      "contestId": 1934,
+      "problem": {
+        "contestId": 1934,
+        "index": "B",
+        "name": "Yet Another Coin Problem"
+      },
+      "verdict": "WRONG_ANSWER"
+    },
+    {
+      "id": 325019140,
+      "contestId": 2117,
+      "problem": {
+        "contestId": 2117,
+        "index": "A",
+        "name": "False Alarm"
+      }
+    }
+  ]
+}

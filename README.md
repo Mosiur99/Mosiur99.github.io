@@ -69,3 +69,13 @@ All text on the site lives in `src/content/`:
 
 Each file is checked against the schemas in `src/content/schemas.ts`. A missing field or a
 wrong date stops the build with a message naming the file and the field.
+
+## Competitive programming stats
+
+`npm run fetch-stats` reads the profiles in `src/content/judges.yaml`, calls the Codeforces API
+and LeetCode's public GraphQL endpoint, and writes `src/data/cp-stats.json`. The file is
+committed, so the site always builds with data.
+
+If a platform fails (timeout, error, unexpected response), the last saved value is kept and
+marked `cached`; a platform is never shown as zero. Platforms without an API can be added to
+`judges.yaml` with `source: manual` and their numbers.

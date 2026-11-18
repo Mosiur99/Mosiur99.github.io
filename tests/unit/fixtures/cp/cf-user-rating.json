@@ -1,0 +1,41 @@
+{
+  "status": "OK",
+  "result": [
+    {
+      "contestId": 1154,
+      "contestName": "Codeforces Round 552 (Div. 3)",
+      "handle": "mosiur_zaman",
+      "rank": 6058,
+      "ratingUpdateTimeSeconds": 1555432500,
+      "oldRating": 0,
+      "newRating": 1367
+    },
+    {
+      "contestId": 1146,
+      "contestName": "Forethought Future Cup - Elimination Round",
+      "handle": "mosiur_zaman",
+      "rank": 2930,
+      "ratingUpdateTimeSeconds": 1555792500,
+      "oldRating": 1367,
+      "newRating": 1243
+    },
+    {
+      "contestId": 1950,
+      "contestName": "Codeforces Round 937 (Div. 4)",
+      "handle": "mosiur_zaman",
+      "rank": 7088,
+      "ratingUpdateTimeSeconds": 1711645200,
+      "oldRating": 1299,
+      "newRating": 1271
+    },
+    {
+      "contestId": 1980,
+      "contestName": "Codeforces Round 950 (Div. 3)",
+      "handle": "mosiur_zaman",
+      "rank": 9785,
+      "ratingUpdateTimeSeconds": 1717433400,
+      "oldRating": 1271,
+      "newRating": 1240
+    }
+  ]
+}
