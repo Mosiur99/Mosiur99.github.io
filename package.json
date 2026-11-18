@@ -18,9 +18,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "fetch-stats": "tsx scripts/fetch-cp-stats.ts"
+    "fetch-stats": "tsx scripts/fetch-cp-stats.ts",
+    "preview:drafts": "SHOW_DRAFTS=true astro build && SHOW_DRAFTS=true astro preview --port 4322"
   },
   "dependencies": {
+    "@astrojs/rss": "4.0.19",
     "@fontsource/ibm-plex-mono": "5.3.0",
     "@fontsource/ibm-plex-sans": "5.3.0",
     "astro": "7.4.12"

@@ -1,0 +1,257 @@
+---
+import { render } from 'astro:content';
+import Tag from '../../components/Tag.astro';
+import Page from '../../layouts/Page.astro';
+import { getPosts, type BlogPost } from '../../lib/blog';
+import { formatPostDate, readingMinutes } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: { post, newer: posts[index - 1], older: posts[index + 1] },
+  }));
+}
+
+interface Props {
+  post: BlogPost;
+  newer?: BlogPost;
+  older?: BlogPost;
+}
+
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter((heading) => heading.depth === 2);
+---
+
+<Page title={post.data.title} description={post.data.description} noindex={post.data.draft}>
+  <article>
+    <header>
+      <p class="meta">
+        <time datetime={post.data.date.toISOString()}>{formatPostDate(post.data.date)}</time> ·{' '}
+        {readingMinutes(post.body ?? '')} min read
+        {post.data.updated && (
+          <>
+            {' '}
+            · Updated{' '}
+            <time datetime={post.data.updated.toISOString()}>
+              {formatPostDate(post.data.updated)}
+            </time>
+          </>
+        )}
+      </p>
+      <h1>{post.data.title}</h1>
+      {post.data.tags.length > 0 && (
+        <ul class="tags" aria-label="Tags">
+          {post.data.tags.map((tag) => (
+            <li>
+              <Tag>{tag}</Tag>
+            </li>
+          ))}
+        </ul>
+      )}
+    </header>
+
+    {toc.length > 2 && (
+      <nav class="toc" aria-label="On this page">
+        <p>On this page</p>
+        <ol>
+          {toc.map((heading) => (
+            <li>
+              <a href={`#${heading.slug}`}>{heading.text}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+
+  <nav class="pager" aria-label="More posts">
+    {older && (
+      <a class="older" href={`/blog/${older.id}/`}>
+        <span>Older</span>
+        {older.data.title}
+      </a>
+    )}
+    {newer && (
+      <a class="newer" href={`/blog/${newer.id}/`}>
+        <span>Newer</span>
+        {newer.data.title}
+      </a>
+    )}
+  </nav>
+</Page>
+
+<style>
+  .meta {
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+  }
+
+  h1 {
+    margin-top: var(--space-2);
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    letter-spacing: -0.015em;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: var(--space-3);
+  }
+
+  .toc {
+    margin-top: var(--space-6);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-panel);
+    font-size: var(--text-sm);
+  }
+
+  .toc p {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .toc ol {
+    margin-top: var(--space-2);
+    padding-left: 18px;
+    list-style: decimal;
+  }
+
+  .prose {
+    margin-top: var(--space-6);
+    color: var(--color-text);
+    font-size: 1.02rem;
+    line-height: 1.75;
+  }
+
+  .prose :global(h2) {
+    margin: var(--space-7) 0 var(--space-3);
+    font-size: 1.3rem;
+    scroll-margin-top: var(--space-5);
+  }
+
+  .prose :global(h3) {
+    margin: var(--space-6) 0 var(--space-2);
+    font-size: 1.1rem;
+  }
+
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol),
+  .prose :global(table),
+  .prose :global(pre),
+  .prose :global(blockquote) {
+    margin: 0 0 var(--space-4);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 22px;
+  }
+
+  .prose :global(li) {
+    margin: 4px 0;
+  }
+
+  .prose :global(a) {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(strong) {
+    color: var(--color-ink);
+  }
+
+  .prose :global(code) {
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: var(--color-panel);
+    font-size: 0.88em;
+  }
+
+  .prose :global(pre) {
+    padding: var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+
+  .prose :global(pre code) {
+    padding: 0;
+    background: none;
+  }
+
+  .prose :global(table) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 8px 12px;
+    border: 1px solid var(--color-line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose :global(th) {
+    background: var(--color-panel);
+    color: var(--color-ink);
+  }
+
+  .prose :global(blockquote) {
+    padding-left: var(--space-4);
+    border-left: 3px solid var(--color-line-strong);
+    color: var(--color-muted);
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+  }
+
+  .pager a {
+    display: grid;
+    gap: 2px;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .pager span {
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+    font-weight: 400;
+  }
+
+  .newer {
+    grid-column: 2;
+    text-align: right;
+  }
+</style>

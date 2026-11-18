@@ -5,6 +5,7 @@ import {
   educationSchema,
   experienceSchema,
   judgeSchema,
+  postSchema,
   profileSchema,
   projectSchema,
   skillGroupSchema,
@@ -23,6 +24,10 @@ export const collections = {
   achievements: defineCollection({
     loader: file('src/content/achievements.yaml'),
     schema: achievementSchema,
+  }),
+  blog: defineCollection({
+    loader: glob({ pattern: '*.md', base: 'src/content/blog' }),
+    schema: postSchema,
   }),
   judges: defineCollection({ loader: file('src/content/judges.yaml'), schema: judgeSchema }),
   education: defineCollection({

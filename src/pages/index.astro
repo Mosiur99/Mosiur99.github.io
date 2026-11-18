@@ -9,6 +9,7 @@ import Projects from '../components/Projects.astro';
 import Skills from '../components/Skills.astro';
 import Writing, { type PostSummary } from '../components/Writing.astro';
 import Home from '../layouts/Home.astro';
+import { getPosts } from '../lib/blog';
 import { roundedLabel } from '../lib/chart';
 import { cpStats } from '../lib/cp/load';
 import { visibleSections } from '../lib/sections';
@@ -22,7 +23,12 @@ const projects = await data(getCollection('projects'));
 const skills = await data(getCollection('skills'));
 const achievements = await data(getCollection('achievements'));
 const education = await data(getCollection('education'));
-const posts: PostSummary[] = [];
+const posts: PostSummary[] = (await getPosts()).map((post) => ({
+  slug: post.id,
+  title: post.data.title,
+  description: post.data.description,
+  date: post.data.date,
+}));
 
 const github = profile.socials.find((social) => social.kind === 'github');
 if (!github) throw new Error('profile.yaml needs a GitHub link');

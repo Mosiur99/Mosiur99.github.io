@@ -88,3 +88,14 @@ The "problems solved" number in the About section is calculated from the same fi
 If a platform fails (timeout, error, unexpected response), the last saved value is kept and
 marked `cached`; a platform is never shown as zero. Platforms without an API can be added to
 `judges.yaml` with `source: manual` and their numbers.
+
+## Writing a blog post
+
+1. Add `src/content/blog/my-post.md` with `title`, `description` (up to 160 characters),
+   `date`, `tags` and `draft: true`.
+2. Preview it with `npm run dev` or `npm run preview:drafts` (port 4322). Drafts show a Draft
+   badge and are hidden from search engines.
+3. Set `draft: false`, commit and push. The post, the home page Writing list and `/rss.xml`
+   update on the next deploy.
+
+The Writing section on the home page appears automatically once at least one post is published.
