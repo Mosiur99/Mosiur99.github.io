@@ -88,6 +88,7 @@ export const achievementSchema = z
     category: z.enum(achievementCategories),
     year: z.number().int().min(2015).max(2100),
     month: z.number().int().min(1).max(12).optional(),
+    team: z.string().min(1).optional(),
     endYear: z.number().int().min(2015).max(2100).optional(),
     link: z.url().optional(),
   })

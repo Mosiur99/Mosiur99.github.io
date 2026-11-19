@@ -115,10 +115,15 @@ const results = sortAchievements(achievements);
         <span class="year">{achievementDate(a)}</span>
         <span class="what">
           {a.title}
-          {a.link && (
-            <a class="standings" href={a.link} target="_blank" rel="noopener noreferrer">
-              Standings<span class="visually-hidden"> for {a.title}</span>
-            </a>
+          {(a.team || a.link) && (
+            <span class="meta">
+              {a.team && <span class="team">Team {a.team}</span>}
+              {a.link && (
+                <a class="standings" href={a.link} target="_blank" rel="noopener noreferrer">
+                  Standings<span class="visually-hidden"> for {a.title}</span>
+                </a>
+              )}
+            </span>
           )}
         </span>
         <span class="result">{a.result}</span>
@@ -350,13 +355,26 @@ const results = sortAchievements(achievements);
   }
 
   .what {
+    display: grid;
     color: var(--color-ink);
     font-weight: 500;
   }
 
-  .standings {
-    margin-left: var(--space-2);
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px var(--space-3);
+    margin-top: 2px;
     font-size: var(--text-xs);
+    font-weight: 400;
+  }
+
+  .team {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+  }
+
+  .standings {
     font-weight: 500;
     white-space: nowrap;
   }

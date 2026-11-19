@@ -66,6 +66,7 @@ test.describe('competitive programming', () => {
     await expect(page.locator('#cp .results')).toContainText('ICPC Asia Dhaka Regional');
     const standings = page.locator('#cp .results a.standings');
     await expect(standings).toHaveCount(4);
+    await expect(page.locator('#cp .results .team').first()).toContainText('NSTU_SnackAttack');
     for (const link of await standings.all()) {
       await expect(link).toHaveAttribute('target', '_blank');
       await expect(link).toHaveAttribute('href', /^https:\/\//);

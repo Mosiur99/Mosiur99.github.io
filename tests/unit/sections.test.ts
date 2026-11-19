@@ -196,8 +196,14 @@ describe('CompetitiveProgramming', () => {
   it('links standings pages in a new tab with a readable name', async () => {
     const html = await render();
     expect(html).toMatch(
-      /href="https:\/\/vjudge\.net\/contest\/538028#rank"[^>]*target="_blank"[^>]*>\s*Standings<span class="visually-hidden"[^>]*> for UITS Ahmed Zobayer/,
+      /href="https:\/\/toph\.co\/c\/cou-bracnet-inter-university-2023\/standings"[^>]*target="_blank"[^>]*>\s*Standings<span class="visually-hidden"[^>]*> for CoU-BRACNet/,
     );
+  });
+
+  it('names the team when it is known', async () => {
+    const html = await render();
+    expect(html).toContain('Team NSTU_SnackAttack');
+    expect(html).toContain('Team LoadShedding');
   });
 
   it('shows a logo card for every judge, linked to the profile', async () => {
