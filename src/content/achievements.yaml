@@ -63,6 +63,7 @@ uits-iupc-2023:
   category: contest
   year: 2023
   month: 1
+  link: https://vjudge.net/contest/538028#rank
 cuet-iupc-2022:
   title: CUET CSE Fest Inter University Programming Contest
   result: 19th
@@ -70,11 +71,43 @@ cuet-iupc-2022:
   year: 2022
   month: 12
   link: https://toph.co/c/cuet-cse-fest-2022-inter-university-divisional/standings
+nstusc-science-fest-2022:
+  title: NSTUSC Science Fest Programming Contest 2022
+  result: 7th
+  category: contest
+  year: 2022
+  month: 12
+  link: https://vjudge.net/contest/533550#rank
+icepc-intra-nstu-2022:
+  title: NSTU Intra University Programming Contest 2022, ICE Programming Club
+  result: 4th
+  category: contest
+  year: 2022
+  month: 10
+icpc-dhaka-preliminary-2021:
+  title: ICPC Asia Dhaka Regional 2021, online preliminary
+  result: 123rd
+  category: icpc
+  year: 2022
+  month: 9
+nstu-intra-2022:
+  title: NSTU Intra University Programming Contest
+  result: 8th
+  category: contest
+  year: 2022
+  month: 7
+iiuc-iupc-2020:
+  title: IIUC Inter University Programming Contest 2020
+  result: 21st
+  category: contest
+  year: 2020
+  month: 1
 nstu-eee-iupc-2022:
   title: NSTU EEE Day Inter-University Programming Contest
   result: Champion
   category: contest
   year: 2022
+  month: 12
   summary: First place in the inter-university programming contest held for EEE Day at NSTU.
 intra-nstu-2022:
   title: Intra NSTU Programming Contest, senior division
@@ -86,7 +119,8 @@ icpc-dhaka-2021:
   title: ICPC Asia Dhaka Regional 2021, onsite
   result: 98th
   category: icpc
-  year: 2021
+  year: 2022
+  month: 10
   team: LoadShedding
   link: https://icpc.global/regionals/finder/Dhaka-2022/standings
   featured: true

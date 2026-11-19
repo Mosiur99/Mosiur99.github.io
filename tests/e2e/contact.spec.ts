@@ -23,6 +23,15 @@ test.describe('contact', () => {
     expect(await page.evaluate(() => window.getSelection()?.toString())).toBe(email);
   });
 
+  test('shows an icon beside every profile link', async ({ page }) => {
+    await page.goto('/');
+    const links = page.locator('#contact .links a');
+    expect(await links.count()).toBeGreaterThan(0);
+    for (const link of await links.all()) {
+      await expect(link.locator('svg')).toBeVisible();
+    }
+  });
+
   test('offers a mail link and LinkedIn', async ({ page }) => {
     await page.goto('/');
     const contact = page.locator('#contact');

@@ -29,9 +29,11 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
 
   {featured.length > 0 && (
     <article class="icpc surface">
-      <div class="badge" aria-hidden="true">
-        <b>{featured.length}×</b>
-        <small>ICPC Asia Dhaka Regional onsite</small>
+      <div class="badge">
+        <img src="/logos/icpc.png" alt="ICPC logo" width="160" height="114" />
+        <p aria-hidden="true">
+          <b>{featured.length}×</b> onsite
+        </p>
       </div>
       <div>
         <h3>ICPC Asia Dhaka Regional, onsite</h3>
@@ -138,23 +140,31 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
   .badge {
     display: grid;
     place-content: center;
-    padding: 20px;
+    justify-items: center;
+    gap: 14px;
+    padding: 22px 18px;
     border: 1px solid var(--color-line);
     border-radius: 16px;
-    background: var(--color-panel);
+    background: #fff;
     text-align: center;
   }
 
-  .badge b {
-    font: 700 2.75rem / 1 var(--font-display);
-    letter-spacing: -0.04em;
+  .badge img {
+    width: 100%;
+    max-width: 160px;
+    height: auto;
   }
 
-  .badge small {
-    margin-top: 8px;
-    color: var(--color-muted);
+  .badge p {
+    margin: 0;
+    color: #5b6582;
     font-size: var(--text-xs);
     font-weight: 500;
+  }
+
+  .badge b {
+    color: #111a35;
+    font: 700 1.25rem / 1 var(--font-display);
   }
 
   .icpc h3 {

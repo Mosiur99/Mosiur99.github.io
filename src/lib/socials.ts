@@ -7,7 +7,7 @@ export const socialIcons: Record<SocialKind, IconName> = {
   github: 'github',
   linkedin: 'linkedin',
   codeforces: 'codeforces',
-  leetcode: 'code',
+  leetcode: 'leetcode',
   email: 'mail',
 };
 

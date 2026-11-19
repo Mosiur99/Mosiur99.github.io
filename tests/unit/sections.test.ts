@@ -250,8 +250,9 @@ describe('Achievements', () => {
   );
   const render = () => container.renderToString(Achievements, { props: { achievements } });
 
-  it('puts the featured ICPC results in one card with their ranks', async () => {
+  it('puts the featured ICPC results in one card with the ICPC logo and their ranks', async () => {
     const html = await render();
+    expect(html).toContain('src="/logos/icpc.png" alt="ICPC logo"');
     const featured = achievements.filter((a) => a.featured);
     expect(featured.length).toBeGreaterThan(0);
     expect(html).toContain(`${featured.length}×`);
