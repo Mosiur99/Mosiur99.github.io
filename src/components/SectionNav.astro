@@ -8,7 +8,7 @@ interface Props {
 const { sections } = Astro.props;
 ---
 
-<nav class="section-nav" aria-label="Sections">
+<nav class="section-nav" id="section-nav" aria-label="Sections">
   <ul>
     {sections.map((section) => (
       <li>
@@ -58,7 +58,7 @@ const { sections } = Astro.props;
 
 <style>
   ul {
-    display: grid;
+    display: flex;
     gap: 2px;
     margin: 0;
     padding: 0;
@@ -67,22 +67,22 @@ const { sections } = Astro.props;
 
   a {
     display: block;
-    padding: 6px 10px;
-    border-radius: var(--radius-sm);
-    color: var(--color-muted);
+    padding: 8px 11px;
+    border-radius: 10px;
+    color: var(--color-text);
     font-size: var(--text-sm);
+    font-weight: 500;
+    white-space: nowrap;
   }
 
   a:hover {
-    background: var(--color-bg);
+    background: var(--color-panel);
     color: var(--color-ink);
     text-decoration: none;
   }
 
   a[aria-current='true'] {
-    background: var(--color-bg);
-    color: var(--color-ink);
-    font-weight: 600;
-    box-shadow: inset 2px 0 0 var(--color-accent);
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
   }
 </style>

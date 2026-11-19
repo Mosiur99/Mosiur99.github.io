@@ -1,10 +1,10 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { beforeAll, describe, expect, it } from 'vitest';
-import About from '../../src/components/About.astro';
 import CompetitiveProgramming from '../../src/components/CompetitiveProgramming.astro';
 import Contact from '../../src/components/Contact.astro';
 import Education from '../../src/components/Education.astro';
 import Experience from '../../src/components/Experience.astro';
+import Hero from '../../src/components/Hero.astro';
 import Projects from '../../src/components/Projects.astro';
 import Skills from '../../src/components/Skills.astro';
 import Writing from '../../src/components/Writing.astro';
@@ -20,7 +20,6 @@ import type { CpStats } from '../../src/lib/cp/types';
 import { readFrontmatter, readYamlEntries } from './content-loader';
 
 let container: AstroContainer;
-const escape = (text: string) => text.replaceAll("'", '&#39;');
 const [[, profileData]] = readYamlEntries('profile.yaml') as [[string, unknown]];
 const profile = profileSchema.parse(profileData);
 const companies = readYamlEntries('experience.yaml').map(([, data]) =>
@@ -33,15 +32,34 @@ beforeAll(async () => {
   container = await AstroContainer.create();
 });
 
-describe('About', () => {
-  it('shows the lead, summary and all four highlights', async () => {
-    const html = await container.renderToString(About, {
-      props: { profile, stats: { problemsSolved: '3,300+' } },
-    });
-    expect(html).toContain(escape(profile.lead));
-    profile.summary.forEach((p) => expect(html).toContain(escape(p)));
-    expect(html.match(/<dt/g)).toHaveLength(4);
-    expect(html).toContain('3,300+');
+describe('Hero', () => {
+  const render = () =>
+    container.renderToString(Hero, { props: { profile, stats: { problemsSolved: '3,300+' } } });
+
+  it('greets with the name as the only h1', async () => {
+    const html = await render();
+    expect(html.match(/<h1/g)).toHaveLength(1);
+    expect(html.replace(/<!--.*?-->/g, '')).toMatch(/<h1[^>]*>Hi, I(&#39;|')m Mosiur Zzaman<\/h1>/);
+  });
+
+  it('shows the marked words of the introduction in bold, without the markers', async () => {
+    const html = await render();
+    expect(html).toMatch(/<b[^>]*>Rokomari\.com<\/b>/);
+    expect(html).toMatch(/<b[^>]*>Spring Boot<\/b>/);
+    expect(html).not.toContain('**');
+  });
+
+  it('shows all four highlights with the live problems-solved number', async () => {
+    const html = await render();
+    expect(html.match(/<li[^>]*><b[^>]*>/g)).toHaveLength(4);
+    expect(html).toMatch(/<b[^>]*>3,300\+<\/b> problems solved/);
+  });
+
+  it('shows the photo, the CV link and every social link', async () => {
+    const html = await render();
+    expect(html).toContain('alt="Photo of Mosiur Zzaman"');
+    expect(html).toContain(`href="${profile.cvPath}"`);
+    profile.socials.forEach((s) => expect(html).toContain(`aria-label="${s.label}"`));
   });
 });
 

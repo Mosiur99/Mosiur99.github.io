@@ -2,15 +2,10 @@ main:
   name: Mosiur Zzaman
   role: Backend Software Engineer
   lead: >-
-    I'm a backend engineer who builds reliable services in Java and Spring Boot, with a strong
-    foundation in algorithms from years of competitive programming.
-  summary:
-    - >-
-      At Rokomari.com I work on the backend of a large e-commerce platform: event pipelines,
-      caching, product search, payments and access control.
-    - >-
-      In my own time I build production-style systems such as PayLedger, a payments ledger with
-      Kafka, Keycloak and Kubernetes, and I contribute to open-source Java libraries.
+    Backend Software Engineer at **Rokomari.com**, building **event pipelines**, **caching**,
+    **search** and **payments** for a large e-commerce platform with **Java** and **Spring Boot**.
+    In my own time I build production-style systems like **PayLedger** and contribute to
+    **open source**.
   location: Dhaka, Bangladesh
   employer:
     name: Rokomari.com
@@ -39,10 +34,10 @@ main:
       url: mailto:mosiurzzaman99@gmail.com
   highlights:
     - value: 2+ years
-      label: Production backend
+      label: in production backend
     - stat: problemsSolved
-      label: Problems solved
+      label: problems solved
     - value: 2×
-      label: ICPC Dhaka Regional
+      label: ICPC Dhaka Regional onsite
     - value: '142'
-      label: Tests in PayLedger
+      label: tests in PayLedger

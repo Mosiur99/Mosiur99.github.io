@@ -11,8 +11,8 @@ export const socialKinds = ['github', 'linkedin', 'codeforces', 'leetcode', 'ema
 export const profileSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
-  lead: z.string().min(1).max(220),
-  summary: z.array(z.string().min(1)).min(1).max(3),
+  /** The hero introduction; wrap words in **double asterisks** to show them in bold. */
+  lead: z.string().min(1).max(400),
   location: z.string().min(1),
   employer: z.object({ name: z.string().min(1), url: z.url() }),
   availability: z.string().min(1),

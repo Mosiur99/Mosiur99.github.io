@@ -10,9 +10,9 @@ describe('visibleSections', () => {
     expect(visibleSections({ hasPosts: true })).toEqual(sections);
   });
 
-  it('starts with About and ends with Contact', () => {
+  it('starts with Experience and ends with Contact', () => {
     const ids = visibleSections({ hasPosts: false }).map((s) => s.id);
-    expect(ids[0]).toBe('about');
+    expect(ids[0]).toBe('experience');
     expect(ids.at(-1)).toBe('contact');
   });
 });

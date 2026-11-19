@@ -1,7 +1,8 @@
 ---
 import Base from './Base.astro';
 import Footer from '../components/Footer.astro';
-import Sidebar from '../components/Sidebar.astro';
+import Icon from '../components/Icon.astro';
+import TopNav from '../components/TopNav.astro';
 import type { Profile } from '../content/schemas';
 import type { Section } from '../lib/sections';
 
@@ -18,30 +19,22 @@ const { profile, sections, jsonLd } = Astro.props;
   <a class="skip-link" href="#main">
     Skip to content
   </a>
-  <div class="shell">
-    <Sidebar profile={profile} sections={sections} />
+  <div class="frame">
+    <TopNav profile={profile} sections={sections} />
     <main id="main">
-      <div class="column">
-        <slot />
-        <Footer />
-      </div>
+      <slot />
+      <a class="to-top" href="#about" aria-label="Back to top">
+        <Icon name="arrowUp" size={17} />
+      </a>
     </main>
+    <Footer />
   </div>
 </Base>
 
 <style>
-  :global(body) {
-    background: var(--color-page);
-  }
-
-  .shell {
-    display: grid;
-    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-    align-items: start;
-    gap: 40px;
-    max-width: var(--frame-width);
+  .frame {
+    max-width: calc(var(--frame-width) + 48px);
     margin-inline: auto;
-    padding-block: 32px 48px;
     padding-left: max(24px, env(safe-area-inset-left, 0px));
     padding-right: max(24px, env(safe-area-inset-right, 0px));
   }
@@ -50,23 +43,32 @@ const { profile, sections, jsonLd } = Astro.props;
     min-width: 0;
   }
 
-  .column :global(section) {
-    scroll-margin-top: var(--space-5);
-    padding: 32px 36px;
-    border: 1px solid var(--color-line);
-    border-radius: 16px;
-    background: var(--color-bg);
+  main :global(section) {
+    padding-block: 56px;
+    scroll-margin-top: 96px;
   }
 
-  .column :global(section + section) {
-    margin-top: var(--space-5);
+  .to-top {
+    position: fixed;
+    right: calc(20px + env(safe-area-inset-right, 0px));
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index: 15;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    background: var(--color-bg);
+    box-shadow: var(--shadow-card);
+    color: var(--color-ink);
   }
 
   .skip-link {
     position: absolute;
     left: var(--space-4);
     top: -100px;
-    z-index: 10;
+    z-index: 30;
     padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-md);
     background: var(--color-accent);
@@ -77,19 +79,18 @@ const { profile, sections, jsonLd } = Astro.props;
     top: var(--space-4);
   }
 
-  @media (max-width: 1000px) {
-    .shell {
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-5);
-      padding-block: 20px 40px;
+  @media (max-width: 640px) {
+    .frame {
       padding-left: max(16px, env(safe-area-inset-left, 0px));
       padding-right: max(16px, env(safe-area-inset-right, 0px));
     }
-  }
 
-  @media (max-width: 640px) {
-    .column :global(section) {
-      padding: 24px 20px;
+    main :global(section) {
+      padding-block: 40px;
+    }
+
+    .to-top {
+      display: none;
     }
   }
 </style>

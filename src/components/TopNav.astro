@@ -1,0 +1,158 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import SectionNav from './SectionNav.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import type { Profile } from '../content/schemas';
+import type { Section } from '../lib/sections';
+
+interface Props {
+  profile: Profile;
+  sections: Section[];
+}
+
+const { profile, sections } = Astro.props;
+const [firstName, ...rest] = profile.name.split(' ');
+---
+
+<header class="top-nav" data-top-nav>
+  <div class="bar">
+    <a class="brand" href="#about">
+      {firstName}
+      <span class="visually-hidden"> {rest.join(' ')}</span>
+      <span aria-hidden="true">.</span>
+    </a>
+    <SectionNav sections={sections} />
+    <ThemeToggle />
+    <span class="cv">
+      <Button variant="primary" icon="download" href={profile.cvPath}>
+        CV<span class="visually-hidden"> (PDF)</span>
+      </Button>
+    </span>
+    <button
+      class="menu"
+      type="button"
+      aria-label="Open the section menu"
+      aria-expanded="false"
+      aria-controls="section-nav"
+      data-menu-button
+    >
+      <Icon name="menu" size={18} />
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-top-nav]');
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+
+  function setOpen(open: boolean) {
+    header?.toggleAttribute('data-open', open);
+    button?.setAttribute('aria-expanded', String(open));
+    button?.setAttribute('aria-label', open ? 'Close the section menu' : 'Open the section menu');
+  }
+
+  button?.addEventListener('click', () => setOpen(!header?.hasAttribute('data-open')));
+  header?.querySelectorAll('[data-section-link]').forEach((link) => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && header?.hasAttribute('data-open')) {
+      setOpen(false);
+      button?.focus();
+    }
+  });
+</script>
+
+<style>
+  .top-nav {
+    position: sticky;
+    top: calc(env(safe-area-inset-top, 0px) + 14px);
+    z-index: 20;
+    margin-top: 14px;
+  }
+
+  .bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px 10px 22px;
+    border: 1px solid var(--color-line);
+    border-radius: 18px;
+    background: var(--nav-bg);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: saturate(1.4) blur(14px);
+  }
+
+  .brand {
+    margin-right: auto;
+    color: var(--color-ink);
+    font: 700 1.0625rem / 1 var(--font-display);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .brand span[aria-hidden] {
+    color: var(--color-accent);
+  }
+
+  .brand:hover {
+    text-decoration: none;
+  }
+
+  .bar :global(.theme-toggle) {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+  }
+
+  .menu {
+    display: none;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 11px;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  @media (max-width: 1040px) {
+    .bar :global(.section-nav) {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      padding: 8px;
+      border: 1px solid var(--color-line);
+      border-radius: 16px;
+      background: var(--color-bg);
+      box-shadow: var(--shadow-card);
+    }
+
+    .top-nav[data-open] :global(.section-nav) {
+      display: block;
+    }
+
+    .bar :global(.section-nav ul) {
+      flex-direction: column;
+    }
+
+    .menu {
+      display: grid;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cv {
+      display: none;
+    }
+
+    .bar {
+      padding-left: 18px;
+    }
+  }
+</style>

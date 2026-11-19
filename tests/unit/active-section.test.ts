@@ -8,20 +8,17 @@ const sections = [
 ];
 
 describe('pickActiveSection', () => {
-  it('starts on the first section at the top of the page', () => {
-    expect(pickActiveSection(sections, { readingLine: 280, atTop: true, atBottom: false })).toBe(
-      'about',
-    );
+  it('marks nothing at the top of the page, where the introduction is', () => {
+    expect(
+      pickActiveSection(sections, { readingLine: 280, atTop: true, atBottom: false }),
+    ).toBeUndefined();
   });
 
-  it('picks the first section at the top even when the next one is above the line', () => {
-    const short = [
-      { id: 'about', top: 56 },
-      { id: 'experience', top: 190 },
-    ];
-    expect(pickActiveSection(short, { readingLine: 280, atTop: true, atBottom: false })).toBe(
-      'about',
-    );
+  it('marks nothing until the first section reaches the reading line', () => {
+    const below = sections.map((s) => ({ ...s, top: s.top + 400 }));
+    expect(
+      pickActiveSection(below, { readingLine: 280, atTop: false, atBottom: false }),
+    ).toBeUndefined();
   });
 
   it('picks the last section that passed the reading line', () => {

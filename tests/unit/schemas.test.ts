@@ -109,7 +109,6 @@ describe('profile highlights', () => {
     name: 'N',
     role: 'R',
     lead: 'L',
-    summary: ['S'],
     location: 'Dhaka',
     employer: { name: 'E', url: 'https://example.com' },
     availability: 'Open',

@@ -21,14 +21,16 @@ test('is hidden from search engines', async ({ page }) => {
 test('dark theme changes the page background', async ({ page }) => {
   await page.goto('/styleguide');
   const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-  expect(await background()).toBe('rgb(255, 255, 255)');
+  expect(await background()).toBe('rgb(247, 248, 250)');
   await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
-  expect(await background()).toBe('rgb(15, 19, 24)');
+  expect(await background()).toBe('rgb(11, 16, 32)');
 });
 
 test('loads the self-hosted fonts', async ({ page }) => {
   await page.goto('/styleguide');
   await page.evaluate(() => document.fonts.ready);
-  const loaded = await page.evaluate(() => document.fonts.check('16px "IBM Plex Sans"'));
-  expect(loaded).toBe(true);
+  const loaded = await page.evaluate(() =>
+    [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family),
+  );
+  expect(loaded).toEqual(expect.arrayContaining(['Inter', 'Montserrat']));
 });

@@ -7,7 +7,7 @@ test.describe('home page', () => {
 
   test('shows the name and role', async ({ page }) => {
     await expect(page).toHaveTitle('Mosiur Zzaman · Backend Software Engineer');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Mosiur Zzaman');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText("Hi, I'm Mosiur Zzaman");
     await expect(page.getByText('Backend Software Engineer')).toBeVisible();
   });
 

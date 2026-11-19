@@ -87,6 +87,13 @@ describe('SectionHeading', () => {
     expect(html).not.toContain('class="aside"');
   });
 
+  it('renders a subtitle under the title when given', async () => {
+    const html = await container.renderToString(SectionHeading, {
+      props: { title: 'Skills', subtitle: 'Tools I use' },
+    });
+    expect(html).toMatch(/<p class="subtitle"[^>]*>Tools I use<\/p>/);
+  });
+
   it('renders the aside slot when given', async () => {
     const html = await container.renderToString(SectionHeading, {
       props: { title: 'Projects' },

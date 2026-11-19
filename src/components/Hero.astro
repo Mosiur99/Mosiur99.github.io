@@ -1,0 +1,185 @@
+---
+import { Image } from 'astro:assets';
+import photo from '../assets/profile.jpg';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import type { Profile } from '../content/schemas';
+import { splitEmphasis } from '../lib/emphasis';
+import { isExternal, socialIcons } from '../lib/socials';
+
+interface Props {
+  profile: Profile;
+  stats: Record<'problemsSolved', string>;
+}
+
+const { profile, stats } = Astro.props;
+---
+
+<section id="about" class="hero" aria-labelledby="hero-title">
+  <div class="text">
+    <p class="status">
+      <span class="dot" aria-hidden="true"></span>
+      {profile.availability}
+    </p>
+    <h1 id="hero-title">Hi, I'm {profile.name}</h1>
+    <p class="intro">
+      {splitEmphasis(profile.lead).map((part) => (part.strong ? <b>{part.text}</b> : part.text))}
+    </p>
+    <ul class="highlights" aria-label="Highlights">
+      {profile.highlights.map((item) => (
+        <li>
+          <b>{item.stat ? stats[item.stat] : item.value}</b> {item.label}
+        </li>
+      ))}
+    </ul>
+    <div class="actions">
+      <Button variant="primary" icon="download" href={profile.cvPath}>
+        Download CV
+      </Button>
+      <Button href="#contact">Contact me</Button>
+      <ul class="socials">
+        {profile.socials.map((social) => (
+          <li>
+            <a
+              href={social.url}
+              aria-label={social.label}
+              title={social.label}
+              target={isExternal(social.url) ? '_blank' : undefined}
+              rel={isExternal(social.url) ? 'noopener noreferrer' : undefined}
+            >
+              <Icon name={socialIcons[social.kind]} size={17} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <Image
+    class="photo"
+    src={photo}
+    alt={`Photo of ${profile.name}`}
+    widths={[160, 320, 480]}
+    sizes="(max-width: 820px) 150px, 280px"
+    loading="eager"
+    fetchpriority="high"
+  />
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 56px;
+    padding-block: 72px 24px;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: 22px;
+    padding: 6px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-bg);
+    box-shadow: var(--shadow-soft);
+    color: var(--color-ink);
+    font-size: var(--text-xs);
+    font-weight: 500;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-ok);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-ok) 25%, transparent);
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5.4vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.045em;
+  }
+
+  .intro {
+    max-width: 36em;
+    margin-top: 22px;
+    font-size: var(--text-lg);
+    line-height: 1.7;
+  }
+
+  .highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 28px;
+    margin: 22px 0 0;
+    padding: 22px 0 0;
+    border-top: 1px solid var(--color-line);
+    list-style: none;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 0 6px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .socials a {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--color-line);
+    border-radius: 11px;
+    background: var(--color-bg);
+    box-shadow: var(--shadow-soft);
+    color: var(--color-ink);
+  }
+
+  .socials a:hover {
+    border-color: var(--color-line-strong);
+  }
+
+  .photo {
+    width: clamp(200px, 24vw, 280px);
+    height: auto;
+    aspect-ratio: 1;
+    border: 6px solid var(--color-bg);
+    border-radius: 50%;
+    box-shadow: 0 24px 60px rgb(38 48 94 / 18%);
+    object-fit: cover;
+  }
+
+  @media (max-width: 820px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+      padding-block: 40px 8px;
+    }
+
+    .photo {
+      order: -1;
+      width: 150px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .socials {
+      margin-left: 0;
+    }
+  }
+</style>

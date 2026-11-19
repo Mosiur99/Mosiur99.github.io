@@ -65,6 +65,9 @@ export const icons = {
     ],
   },
   code: { viewBox: '0 0 24 24', paths: ['m8 6-6 6 6 6', 'm16 6 6 6-6 6'] },
+  menu: { viewBox: '0 0 24 24', paths: ['M4 7h16', 'M4 12h16', 'M4 17h16'] },
+  arrowUp: { viewBox: '0 0 24 24', paths: ['M12 19V5', 'm6 11 6-6 6 6'] },
+  calendar: { viewBox: '0 0 24 24', paths: ['M4 6h16v14H4z', 'M4 10h16', 'M8 3v4', 'M16 3v4'] },
   user: {
     viewBox: '0 0 24 24',
     paths: ['M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z', 'M4 21c1-4.5 4.2-6.5 8-6.5s7 2 8 6.5'],

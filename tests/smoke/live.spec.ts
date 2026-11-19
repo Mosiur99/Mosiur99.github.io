@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test('home page shows the profile and every section', async ({ page }) => {
   const response = await page.goto('/');
   expect(response?.status()).toBe(200);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Mosiur Zzaman');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText("Hi, I'm Mosiur Zzaman");
   for (const id of ['about', 'experience', 'projects', 'skills', 'cp', 'education', 'contact']) {
     await expect(page.locator(`#${id}`)).toBeAttached();
   }
