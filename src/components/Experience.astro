@@ -33,9 +33,15 @@ const ordered = [...companies].sort((a, b) => a.order - b.order);
       return (
         <article class="company surface">
           <header class="side">
-            <div class="logo" aria-hidden="true">
-              {company.company.charAt(0)}.
-            </div>
+            {company.logo ? (
+              <div class="logo wide">
+                <img src={company.logo} alt={`${company.company} logo`} width="124" height="46" />
+              </div>
+            ) : (
+              <div class="logo" aria-hidden="true">
+                {company.company.charAt(0)}.
+              </div>
+            )}
             <h3>
               <a href={company.url} target="_blank" rel="noopener noreferrer">
                 {company.company}
@@ -130,6 +136,20 @@ const ordered = [...companies].sort((a, b) => a.order - b.order);
     box-shadow: var(--shadow-soft);
     color: #111a35;
     font: 700 1.125rem / 1 var(--font-display);
+  }
+
+  .logo.wide {
+    width: auto;
+    height: auto;
+    justify-self: start;
+    align-self: flex-start;
+    padding: 10px 14px;
+  }
+
+  .logo img {
+    display: block;
+    width: 124px;
+    height: auto;
   }
 
   h3 {

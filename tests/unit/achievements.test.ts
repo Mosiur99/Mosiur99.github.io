@@ -8,6 +8,7 @@ const make = (title: string, extra: Partial<Achievement>): Achievement => ({
   category: 'contest',
   year: 2023,
   featured: false,
+  links: [],
   ...extra,
 });
 

@@ -93,6 +93,16 @@ describe('Experience', () => {
     expect(html).not.toContain('**');
   });
 
+  it('shows the company logo when there is one, and the initial otherwise', async () => {
+    const html = await container.renderToString(Experience, { props: { companies, today } });
+    expect(html).toContain('src="/logos/rokomari.svg" alt="Rokomari.com logo"');
+    const plain = { ...rokomari, logo: undefined };
+    const fallback = await container.renderToString(Experience, {
+      props: { companies: [plain], today },
+    });
+    expect(fallback).toMatch(/class="logo"[^>]*>\s*R\.\s*</);
+  });
+
   it('orders companies by their order field', async () => {
     const older = { ...rokomari, company: 'Older Co', order: 2 };
     const html = await container.renderToString(Experience, {
@@ -265,6 +275,16 @@ describe('Achievements', () => {
     const withSummary = achievements.filter((a) => a.summary);
     expect(html.match(/class="card surface"/g)).toHaveLength(withSummary.length);
     withSummary.forEach((a) => expect(html).toContain(a.summary?.replaceAll("'", '&#39;')));
+  });
+
+  it('links the contests a card mentions', async () => {
+    const html = await render();
+    const setter = achievements.find((a) => a.links.length > 0);
+    expect(setter).toBeDefined();
+    setter?.links.forEach((link) => {
+      expect(html).toContain(`href="${link.url}"`);
+      expect(html).toContain(link.label);
+    });
   });
 
   it('lists the remaining results in two columns', async () => {

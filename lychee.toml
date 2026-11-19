@@ -13,6 +13,7 @@ exclude = [
   "^https://www\\.codechef\\.com/",
   "^https://www\\.spoj\\.com/",
   "^https://leetcode\\.com/",
+  "^https://www\\.hackerrank\\.com/",
   "^https://www\\.rokomari\\.com",
   "^https://fonts\\.",
 ]

@@ -57,6 +57,7 @@ const roleSchema = z
 export const experienceSchema = z.object({
   company: z.string().min(1),
   url: z.url(),
+  logo: sitePath.optional(),
   industry: z.string().min(1),
   location: z.string().min(1),
   order: z.number().int(),
@@ -92,6 +93,10 @@ export const achievementSchema = z
     team: z.string().min(1).optional(),
     endYear: z.number().int().min(2015).max(2100).optional(),
     link: z.url().optional(),
+    links: z
+      .array(z.object({ label: z.string().min(1), url: z.url() }))
+      .max(6)
+      .default([]),
     featured: z.boolean().default(false),
     summary: z.string().min(1).max(200).optional(),
   })

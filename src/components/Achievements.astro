@@ -77,10 +77,31 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
           </div>
           <h3>{a.title}</h3>
           <p>{a.summary}</p>
-          <p class="when">
-            <Icon name="calendar" size={13} />
-            {achievementDate(a)}
-          </p>
+          <div class="foot">
+            {(a.link || a.links.length > 0) && (
+              <ul class="card-links">
+                {a.link && (
+                  <li>
+                    <a class="out-link" href={a.link} target="_blank" rel="noopener noreferrer">
+                      Standings<span class="visually-hidden"> for {a.title}</span>
+                    </a>
+                  </li>
+                )}
+                {a.links.map((link) => (
+                  <li>
+                    <a class="out-link" href={link.url} target="_blank" rel="noopener noreferrer">
+                      {link.label}
+                      <span class="visually-hidden"> contest page</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p class="when">
+              <Icon name="calendar" size={13} />
+              {achievementDate(a)}
+            </p>
+          </div>
         </li>
       ))}
     </ul>
@@ -261,13 +282,28 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
     font-size: var(--text-sm);
   }
 
+  .foot {
+    display: grid;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .card-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+
+  .card-links .out-link {
+    font-size: var(--text-xs);
+  }
+
   .when {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-top: auto;
-    padding-top: 12px;
-    border-top: 1px solid var(--color-line);
     color: var(--color-muted);
   }
 

@@ -70,10 +70,48 @@ cuet-iupc-2022:
   category: contest
   year: 2022
   month: 12
+  team: NSTU_EktaBoroNaam
   link: https://toph.co/c/cuet-cse-fest-2022-inter-university-divisional/standings
+selise-2023:
+  title: SELISE Coding Challenge 2023
+  result: 224th
+  category: contest
+  year: 2023
+  month: 2
+  link: https://toph.co/c/selise-coding-challenge-2023/standings
+tough-dash-2022:
+  title: Toph Tough Dash, November 2022 (individual)
+  result: 5th
+  category: contest
+  year: 2022
+  month: 11
+  link: https://toph.co/c/tough-dash-november-2022/standings
+tough-duo-2022:
+  title: Toph Tough Duo, April 2022
+  result: 41st
+  category: contest
+  year: 2022
+  month: 4
+  team: nothanks
+  link: https://toph.co/c/tough-duo-april-2022/standings
+bdyp-quarantine-2020:
+  title: BDYP & Duoblogger Home Quarantine Contest (individual)
+  result: 117th
+  category: contest
+  year: 2020
+  month: 4
+  link: https://toph.co/c/bdyp-duoblogger-home-quarantine-contest/standings
+criterion-2020-r6:
+  title: Criterion 2020 Round 6 (individual)
+  result: 117th
+  category: contest
+  year: 2020
+  month: 4
+  link: https://toph.co/c/criterion-2020-round-6/standings
 nstusc-science-fest-2022:
   title: NSTUSC Science Fest Programming Contest 2022
   result: 7th
+  team: EktaBoroNaam
   category: contest
   year: 2022
   month: 12
@@ -108,6 +146,7 @@ nstu-eee-iupc-2022:
   category: contest
   year: 2022
   month: 12
+  link: https://www.hackerrank.com/contests/nstu-regional-programming-contest-of-eee-day-2022/leaderboard/1
   summary: First place in the inter-university programming contest held for EEE Day at NSTU.
 intra-nstu-2022:
   title: Intra NSTU Programming Contest, senior division
@@ -131,6 +170,15 @@ nstu-problem-setter:
   year: 2020
   endYear: 2024
   summary: Wrote and tested problems for junior, inter-university and EEE Day contests at NSTU.
+  links:
+    - label: JPC 2020
+      url: https://www.hackerrank.com/contests/junior-programming-contest
+    - label: IUPC 2022
+      url: https://www.hackerrank.com/contests/nstu-intra-university-programming-contest-september-2022
+    - label: IUPC 2023
+      url: https://www.hackerrank.com/contests/nstu-intra-university-programming-contest-december-2023
+    - label: EEE Day 2024
+      url: https://www.hackerrank.com/contests/nstu-eee-day-programming-contest-2024
 cste-club-trainer:
   title: CSTE Club, data structures and algorithms
   result: Trainer

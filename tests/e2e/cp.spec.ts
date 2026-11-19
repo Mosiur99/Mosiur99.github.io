@@ -64,10 +64,10 @@ test.describe('problem solving and achievements', () => {
     const section = page.locator('#achievements');
     await expect(section.locator('.icpc .rows li')).toHaveCount(2);
     await expect(section.locator('.card')).toHaveCount(4);
-    await expect(section.locator('.results li')).toHaveCount(14);
+    await expect(section.locator('.results li')).toHaveCount(19);
     await expect(section).toContainText('Team NSTU_SnackAttack');
     const standings = section.locator('a.standings');
-    await expect(standings).toHaveCount(6);
+    await expect(standings).toHaveCount(11);
     for (const link of await standings.all()) {
       await expect(link).toHaveAttribute('target', '_blank');
       await expect(link).toHaveAttribute('href', /^https:\/\//);
