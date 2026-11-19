@@ -54,15 +54,17 @@ const { profile, stats } = Astro.props;
       </ul>
     </div>
   </div>
-  <Image
-    class="photo"
-    src={photo}
-    alt={`Photo of ${profile.name}`}
-    widths={[160, 320, 480]}
-    sizes="(max-width: 820px) 150px, 280px"
-    loading="eager"
-    fetchpriority="high"
-  />
+  <span class="photo-frame">
+    <Image
+      class="photo"
+      src={photo}
+      alt={`Photo of ${profile.name}`}
+      widths={[160, 320, 480]}
+      sizes="(max-width: 820px) 150px, 280px"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </span>
 </section>
 
 <style>
@@ -154,7 +156,76 @@ const { profile, stats } = Astro.props;
     border-color: var(--color-line-strong);
   }
 
+  .photo-frame {
+    position: relative;
+    display: block;
+    border-radius: 50%;
+  }
+
+  .photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      var(--color-accent),
+      transparent 30%,
+      var(--color-accent-soft) 55%,
+      transparent 75%,
+      var(--color-accent)
+    );
+    animation: spin 14s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .text > * {
+      animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    .text > :nth-child(2) {
+      animation-delay: 0.06s;
+    }
+
+    .text > :nth-child(3) {
+      animation-delay: 0.12s;
+    }
+
+    .text > :nth-child(4) {
+      animation-delay: 0.18s;
+    }
+
+    .text > :nth-child(5) {
+      animation-delay: 0.24s;
+    }
+
+    .photo-frame {
+      animation: rise 0.9s 0.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-frame::before {
+      animation: none;
+    }
+  }
+
   .photo {
+    position: relative;
+    display: block;
     width: clamp(200px, 24vw, 280px);
     height: auto;
     aspect-ratio: 1;
@@ -171,8 +242,12 @@ const { profile, stats } = Astro.props;
       padding-block: 40px 8px;
     }
 
-    .photo {
+    .photo-frame {
       order: -1;
+      justify-self: start;
+    }
+
+    .photo {
       width: 150px;
     }
   }

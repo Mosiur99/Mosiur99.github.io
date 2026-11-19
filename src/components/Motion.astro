@@ -1,0 +1,121 @@
+---
+// Page motion: sections rise into view while scrolling, cards tilt in 3D under the pointer,
+// and the top bar gains depth once the page scrolls. Nothing runs for reduced motion.
+---
+
+<script>
+  import { staggerDelay, tiltFor } from '../lib/motion';
+
+  const REVEAL = [
+    'main section .section-heading',
+    '.company',
+    '#projects .featured',
+    '#projects .grid > li',
+    '#achievements .icpc',
+    '#achievements .cards > li',
+    '#achievements .results li',
+    '#problem-solving .total',
+    '#problem-solving .rated > li',
+    '#problem-solving .judges > li',
+    '#problem-solving .chart',
+    '#skills .group',
+    '#education .item',
+    '#contact .contact > *',
+  ].join(',');
+
+  const TILT = [
+    '.hero .photo-frame',
+    '#projects .featured',
+    '#projects .card',
+    '#achievements .icpc',
+    '#achievements .card',
+    '#problem-solving .rating',
+    '#problem-solving .judge',
+  ].join(',');
+
+  const root = document.documentElement;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  function reveal() {
+    const counters = new Map<Element | null, number>();
+    let pending = [...document.querySelectorAll<HTMLElement>(REVEAL)].filter(
+      (el) => el.getBoundingClientRect().top >= window.innerHeight,
+    );
+    pending.forEach((el) => {
+      const index = counters.get(el.parentElement) ?? 0;
+      counters.set(el.parentElement, index + 1);
+      el.style.transitionDelay = `${staggerDelay(index)}ms`;
+      el.classList.add('reveal');
+    });
+
+    // Checked on every scroll frame rather than with an IntersectionObserver, so an element
+    // that a fast scroll jumps past is still shown.
+    function check() {
+      const line = window.innerHeight - 40;
+      pending = pending.filter((el) => {
+        if (el.getBoundingClientRect().top > line) return true;
+        el.classList.add('in');
+        el.addEventListener(
+          'transitionend',
+          () => {
+            el.classList.remove('reveal', 'in');
+            el.style.transitionDelay = '';
+          },
+          { once: true },
+        );
+        return false;
+      });
+      if (pending.length === 0) window.removeEventListener('scroll', schedule);
+    }
+
+    let queued = false;
+    function schedule() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        check();
+      });
+    }
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+  }
+
+  function tilt() {
+    document.querySelectorAll<HTMLElement>(TILT).forEach((el) => {
+      el.classList.add('tiltable');
+      let frame = 0;
+      el.addEventListener('pointermove', (event) => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          const t = tiltFor({ x: event.clientX, y: event.clientY }, el.getBoundingClientRect());
+          el.style.transform = `perspective(900px) rotateX(${t.rotateX}deg) rotateY(${t.rotateY}deg) translateY(-3px)`;
+          el.style.setProperty('--mx', `${t.x}%`);
+          el.style.setProperty('--my', `${t.y}%`);
+          el.classList.add('tilting');
+        });
+      });
+      el.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(frame);
+        el.style.transform = '';
+        el.classList.remove('tilting');
+      });
+    });
+  }
+
+  function topBarDepth() {
+    const bar = document.querySelector('[data-top-nav]');
+    const update = () => bar?.toggleAttribute('data-scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  topBarDepth();
+  if (!reduced) {
+    root.classList.add('motion');
+    reveal();
+    if (finePointer) tilt();
+  }
+</script>

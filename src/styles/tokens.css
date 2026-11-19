@@ -16,6 +16,8 @@
   --shadow-card: 0 16px 40px rgb(38 48 94 / 7%), inset 0 1px 0 rgb(255 255 255 / 90%);
   --shadow-soft: 0 6px 18px rgb(38 48 94 / 6%);
   --nav-bg: rgb(255 255 255 / 82%);
+  --sheen: rgb(57 70 201 / 8%);
+  --shadow-lift: 0 26px 50px rgb(38 48 94 / 13%);
 
   --rank-newbie: #8a8f98;
   --rank-pupil: #2f9a44;
@@ -74,6 +76,8 @@
     --shadow-card: 0 16px 40px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 3%);
     --shadow-soft: 0 6px 18px rgb(0 0 0 / 30%);
     --nav-bg: rgb(18 26 46 / 82%);
+    --sheen: rgb(154 166 255 / 12%);
+    --shadow-lift: 0 26px 50px rgb(0 0 0 / 45%);
     --rank-newbie: #9aa0aa;
     --rank-pupil: #4cc26a;
     --rank-specialist: #2cc7bb;
@@ -102,6 +106,8 @@
   --shadow-card: 0 16px 40px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 3%);
   --shadow-soft: 0 6px 18px rgb(0 0 0 / 30%);
   --nav-bg: rgb(18 26 46 / 82%);
+  --sheen: rgb(154 166 255 / 12%);
+  --shadow-lift: 0 26px 50px rgb(0 0 0 / 45%);
   --rank-newbie: #9aa0aa;
   --rank-pupil: #4cc26a;
   --rank-specialist: #2cc7bb;

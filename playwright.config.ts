@@ -12,6 +12,9 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${port}`,
     trace: 'on-first-retry',
+    // Scroll reveals and tilts would move elements while tests measure them; motion.spec.ts
+    // turns motion back on to test it.
+    contextOptions: { reducedMotion: 'reduce' },
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] }, testIgnore: /drafts\.spec\.ts/ },

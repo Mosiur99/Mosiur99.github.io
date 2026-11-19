@@ -2,6 +2,7 @@
 import Base from './Base.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
+import Motion from '../components/Motion.astro';
 import TopNav from '../components/TopNav.astro';
 import type { Profile } from '../content/schemas';
 import type { Section } from '../lib/sections';
@@ -29,6 +30,7 @@ const { profile, sections, jsonLd } = Astro.props;
     </main>
     <Footer />
   </div>
+  <Motion />
 </Base>
 
 <style>

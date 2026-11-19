@@ -83,6 +83,11 @@ const [firstName, ...rest] = profile.name.split(' ');
     background: var(--nav-bg);
     box-shadow: var(--shadow-card);
     backdrop-filter: saturate(1.4) blur(14px);
+    transition: box-shadow 0.3s;
+  }
+
+  .top-nav[data-scrolled] .bar {
+    box-shadow: var(--shadow-lift);
   }
 
   .brand {
