@@ -67,3 +67,23 @@ test('pages hidden from search have no canonical link', async ({ page }) => {
   await page.goto('/styleguide/');
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
 });
+
+test('preloads the fonts used above the fold so the text does not jump', async ({
+  page,
+  request,
+}) => {
+  await page.goto('/');
+  const hrefs = await page
+    .locator('link[rel="preload"][as="font"]')
+    .evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? ''));
+  expect(hrefs).toHaveLength(4);
+  const css = await page.evaluate(() =>
+    [...document.styleSheets]
+      .flatMap((sheet) => [...sheet.cssRules].map((rule) => rule.cssText))
+      .join('\n'),
+  );
+  for (const href of hrefs) {
+    expect((await request.get(href)).status(), href).toBe(200);
+    expect(css, `${href} is used by a @font-face rule`).toContain(href);
+  }
+});
