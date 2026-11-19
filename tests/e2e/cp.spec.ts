@@ -14,11 +14,18 @@ test.describe('competitive programming', () => {
     expect(Number(total?.replaceAll(',', ''))).toBe(values.reduce((a, b) => a + b, 0));
   });
 
-  test('shows full handles with a larger browser font', async ({ page }) => {
+  test('shows full handles and rating names with a larger browser font', async ({ page }) => {
     await page.evaluate(() => (document.documentElement.style.fontSize = '125%'));
     for (const handle of await page.locator('#cp .judge .handle').all()) {
       const clipped = await handle.evaluate((el) => el.scrollWidth > el.clientWidth);
       expect(clipped).toBe(false);
+    }
+    for (const row of await page.locator('#cp .ratings li').all()) {
+      const overlap = await row.evaluate((li) => {
+        const name = li.children[1];
+        return !name || name.scrollWidth > name.clientWidth;
+      });
+      expect(overlap).toBe(false);
     }
   });
 
