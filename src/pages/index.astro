@@ -1,10 +1,11 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
-import CompetitiveProgramming from '../components/CompetitiveProgramming.astro';
+import Achievements from '../components/Achievements.astro';
 import Contact from '../components/Contact.astro';
 import Education from '../components/Education.astro';
 import Experience from '../components/Experience.astro';
 import Hero from '../components/Hero.astro';
+import ProblemSolving from '../components/ProblemSolving.astro';
 import Projects from '../components/Projects.astro';
 import Skills from '../components/Skills.astro';
 import Writing, { type PostSummary } from '../components/Writing.astro';
@@ -43,8 +44,9 @@ if (!github) throw new Error('profile.yaml needs a GitHub link');
   <Hero profile={profile} stats={{ problemsSolved: roundedLabel(cpStats.totalSolved) }} />
   <Experience companies={companies} />
   <Projects projects={projects} allReposUrl={`${github.url}?tab=repositories`} />
+  <Achievements achievements={achievements} />
+  <ProblemSolving stats={cpStats} />
   <Skills groups={skills} />
-  <CompetitiveProgramming stats={cpStats} achievements={achievements} />
   {posts.length > 0 && <Writing posts={posts} />}
   <Education items={education} />
   <Contact profile={profile} />

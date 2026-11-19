@@ -1,0 +1,340 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import type { Achievement } from '../content/schemas';
+import { achievementDate, groupAchievements } from '../lib/achievements';
+import type { IconName } from '../lib/icons';
+
+interface Props {
+  achievements: Achievement[];
+}
+
+const { featured, cards, more } = groupAchievements(Astro.props.achievements);
+const cardIcons: Record<Achievement['category'], IconName> = {
+  icpc: 'trophy',
+  contest: 'trophy',
+  setting: 'code',
+  mentoring: 'user',
+};
+const half = Math.ceil(more.length / 2);
+const columns = [more.slice(0, half), more.slice(half)].filter((column) => column.length > 0);
+---
+
+<section id="achievements" aria-labelledby="achievements-title">
+  <SectionHeading
+    id="achievements-title"
+    title="Achievements"
+    subtitle="Programming contests, team results and teaching"
+  />
+
+  {featured.length > 0 && (
+    <article class="icpc surface">
+      <div class="badge" aria-hidden="true">
+        <b>{featured.length}×</b>
+        <small>ICPC Asia Dhaka Regional onsite</small>
+      </div>
+      <div>
+        <h3>ICPC Asia Dhaka Regional, onsite</h3>
+        <p>
+          Qualified {featured.length === 2 ? 'twice' : `${featured.length} times`} through the
+          online preliminary for the onsite regional contest of the International Collegiate
+          Programming Contest, against the top university teams in Bangladesh.
+        </p>
+        <ul class="rows">
+          {featured.map((a) => (
+            <li>
+              <span>
+                <strong>{a.title}</strong>
+                {a.team && <span class="team"> · Team {a.team}</span>}
+                {a.link && (
+                  <>
+                    {' · '}
+                    <a class="standings" href={a.link} target="_blank" rel="noopener noreferrer">
+                      Standings<span class="visually-hidden"> for {a.title}</span>
+                    </a>
+                  </>
+                )}
+              </span>
+              <span class="rank">{a.result}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  )}
+
+  {cards.length > 0 && (
+    <ul class="cards">
+      {cards.map((a) => (
+        <li class="card surface">
+          <div class="head">
+            <span class="tile" aria-hidden="true">
+              <Icon name={cardIcons[a.category]} size={18} />
+            </span>
+            <span class="rank">{a.result}</span>
+          </div>
+          <h3>{a.title}</h3>
+          <p>{a.summary}</p>
+          <p class="when">
+            <Icon name="calendar" size={13} />
+            {achievementDate(a)}
+          </p>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {more.length > 0 && (
+    <>
+      <h3 class="more-title">More contest results</h3>
+      <div class="more">
+        {columns.map((column) => (
+          <ul class="results">
+            {column.map((a) => (
+              <li>
+                <span class="year">{achievementDate(a)}</span>
+                <span class="what">
+                  {a.title}
+                  {(a.team || a.link) && (
+                    <span class="meta">
+                      {a.team && <span class="team">Team {a.team}</span>}
+                      {a.link && (
+                        <a
+                          class="standings"
+                          href={a.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Standings<span class="visually-hidden"> for {a.title}</span>
+                        </a>
+                      )}
+                    </span>
+                  )}
+                </span>
+                <span class="rank">{a.result}</span>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </>
+  )}
+</section>
+
+<style>
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .icpc {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 28px;
+    padding: 26px;
+  }
+
+  .badge {
+    display: grid;
+    place-content: center;
+    padding: 20px;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-panel);
+    text-align: center;
+  }
+
+  .badge b {
+    font: 700 2.75rem / 1 var(--font-display);
+    letter-spacing: -0.04em;
+  }
+
+  .badge small {
+    margin-top: 8px;
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+    font-weight: 500;
+  }
+
+  .icpc h3 {
+    font-size: 1.625rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .icpc p {
+    margin-top: 10px;
+  }
+
+  .rows {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .rows li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 16px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--color-panel);
+    font-size: var(--text-sm);
+  }
+
+  .rank {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .standings::after {
+    content: ' ↗';
+  }
+
+  .standings {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .team {
+    color: var(--color-muted);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .tile {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    color: var(--color-ink);
+  }
+
+  .card h3 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .card p {
+    font-size: var(--text-sm);
+  }
+
+  .when {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted);
+  }
+
+  .more-title {
+    margin: 36px 0 6px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-line);
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .more {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 32px;
+  }
+
+  .results li {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 4px 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .year {
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .what {
+    display: grid;
+    color: var(--color-ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px var(--space-3);
+    margin-top: 2px;
+    font-size: var(--text-xs);
+    font-weight: 400;
+  }
+
+  @media (max-width: 1000px) {
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .icpc {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+      padding: 22px 20px;
+    }
+
+    .more {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .results li {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .year {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

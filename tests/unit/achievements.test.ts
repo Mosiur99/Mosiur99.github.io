@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import type { Achievement } from '../../src/content/schemas';
-import { achievementDate, sortAchievements } from '../../src/lib/achievements';
+import { achievementDate, groupAchievements, sortAchievements } from '../../src/lib/achievements';
 
 const make = (title: string, extra: Partial<Achievement>): Achievement => ({
   title,
   result: '1st',
   category: 'contest',
   year: 2023,
+  featured: false,
   ...extra,
 });
 
@@ -52,5 +53,42 @@ describe('sortAchievements', () => {
     const list = [make('a', { month: 1 }), make('b', { month: 2 })];
     sortAchievements(list);
     expect(list.map((a) => a.title)).toEqual(['a', 'b']);
+  });
+});
+
+describe('groupAchievements', () => {
+  it('splits featured results, summary cards and the rest, each newest first', () => {
+    const list = [
+      make('icpc 2021', { year: 2021, featured: true }),
+      make('icpc 2022', { year: 2022, featured: true }),
+      make('champion', { summary: 'Won it' }),
+      make('older contest', { year: 2022 }),
+      make('newer contest', { year: 2024 }),
+    ];
+    const groups = groupAchievements(list);
+    expect(groups.featured.map((a) => a.title)).toEqual(['icpc 2022', 'icpc 2021']);
+    expect(groups.cards.map((a) => a.title)).toEqual(['champion']);
+    expect(groups.more.map((a) => a.title)).toEqual(['newer contest', 'older contest']);
+  });
+
+  it('shows contest results before problem setting and teaching on the cards', () => {
+    const list = [
+      make('trainer', { year: 2024, category: 'mentoring', summary: 'Taught' }),
+      make('setter', { year: 2024, category: 'setting', summary: 'Set problems' }),
+      make('older win', { year: 2021, summary: 'Won' }),
+      make('newer win', { year: 2022, summary: 'Won' }),
+    ];
+    expect(groupAchievements(list).cards.map((a) => a.title)).toEqual([
+      'newer win',
+      'older win',
+      'setter',
+      'trainer',
+    ]);
+  });
+
+  it('puts every result in exactly one group', () => {
+    const list = [make('a', { featured: true }), make('b', { summary: 'S' }), make('c', {})];
+    const { featured, cards, more } = groupAchievements(list);
+    expect(featured.length + cards.length + more.length).toBe(list.length);
   });
 });

@@ -1,10 +1,11 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { beforeAll, describe, expect, it } from 'vitest';
-import CompetitiveProgramming from '../../src/components/CompetitiveProgramming.astro';
+import Achievements from '../../src/components/Achievements.astro';
 import Contact from '../../src/components/Contact.astro';
 import Education from '../../src/components/Education.astro';
 import Experience from '../../src/components/Experience.astro';
 import Hero from '../../src/components/Hero.astro';
+import ProblemSolving from '../../src/components/ProblemSolving.astro';
 import Projects from '../../src/components/Projects.astro';
 import Skills from '../../src/components/Skills.astro';
 import Writing from '../../src/components/Writing.astro';
@@ -161,7 +162,7 @@ describe('Skills', () => {
   });
 });
 
-describe('CompetitiveProgramming', () => {
+describe('ProblemSolving', () => {
   const asOf = '2026-11-18T12:00:00.000Z';
   const stats: CpStats = {
     fetchedAt: asOf,
@@ -199,11 +200,7 @@ describe('CompetitiveProgramming', () => {
       { contestId: 2, contestName: 'Round B', date: '2022-01-01T00:00:00.000Z', rating: 1434 },
     ],
   };
-  const achievements = readYamlEntries('achievements.yaml').map(([, data]) =>
-    achievementSchema.parse(data),
-  );
-  const render = () =>
-    container.renderToString(CompetitiveProgramming, { props: { stats, achievements } });
+  const render = () => container.renderToString(ProblemSolving, { props: { stats } });
 
   it('lists platforms by solved count with the total', async () => {
     const html = await render();
@@ -223,6 +220,57 @@ describe('CompetitiveProgramming', () => {
     const html = await render();
     expect(html).toContain('Peak 1434 (Specialist) in Jan 2022');
     expect(html).toContain('<title id="rating-title">Codeforces rating history</title>');
+  });
+
+  it('shows a logo card for every judge, linked to the profile', async () => {
+    const html = await render();
+    for (const p of stats.platforms) {
+      expect(html).toContain(`src="/judges/${p.platform}.`);
+      expect(html).toContain(`href="${p.url}"`);
+    }
+  });
+
+  it('lets long handles wrap only after an underscore', async () => {
+    const html = await render();
+    expect(html).toMatch(/mosiur_<wbr[^>]*>zaman/);
+  });
+
+  it('shows rating cards with the platform title and peak rating', async () => {
+    const html = await render();
+    expect(html.match(/class="rating surface"/g)).toHaveLength(1);
+    expect(html).toMatch(/Specialist\s*<\/p>/);
+    expect(html).toMatch(/<dd[^>]*>1434<\/dd>/);
+    expect(html).toContain('View profile<span class="visually-hidden"');
+  });
+});
+
+describe('Achievements', () => {
+  const achievements = readYamlEntries('achievements.yaml').map(([, data]) =>
+    achievementSchema.parse(data),
+  );
+  const render = () => container.renderToString(Achievements, { props: { achievements } });
+
+  it('puts the featured ICPC results in one card with their ranks', async () => {
+    const html = await render();
+    const featured = achievements.filter((a) => a.featured);
+    expect(featured.length).toBeGreaterThan(0);
+    expect(html).toContain(`${featured.length}×`);
+    const card = html.slice(html.indexOf('class="icpc'), html.indexOf('class="cards'));
+    featured.forEach((a) => expect(card).toContain(`>${a.result}<`));
+  });
+
+  it('gives each result with a summary its own card', async () => {
+    const html = await render();
+    const withSummary = achievements.filter((a) => a.summary);
+    expect(html.match(/class="card surface"/g)).toHaveLength(withSummary.length);
+    withSummary.forEach((a) => expect(html).toContain(a.summary?.replaceAll("'", '&#39;')));
+  });
+
+  it('lists the remaining results in two columns', async () => {
+    const html = await render();
+    const rest = achievements.filter((a) => !a.featured && !a.summary);
+    expect(html.match(/class="results"/g)).toHaveLength(2);
+    expect(html.match(/class="year"/g)).toHaveLength(rest.length);
   });
 
   it('shows the newest results first, with month and rank', async () => {
@@ -245,25 +293,6 @@ describe('CompetitiveProgramming', () => {
     const html = await render();
     expect(html).toContain('Team NSTU_SnackAttack');
     expect(html).toContain('Team LoadShedding');
-  });
-
-  it('shows a logo card for every judge, linked to the profile', async () => {
-    const html = await render();
-    for (const p of stats.platforms) {
-      expect(html).toContain(`src="/judges/${p.platform}.`);
-      expect(html).toContain(`href="${p.url}"`);
-    }
-  });
-
-  it('lets long handles wrap only after an underscore', async () => {
-    const html = await render();
-    expect(html).toMatch(/mosiur_<wbr[^>]*>zaman/);
-  });
-
-  it('lists contest ratings beside the chart', async () => {
-    const html = await render();
-    expect(html).toContain('Contest ratings');
-    expect(html).toMatch(/<b[^>]*>1434<\/b>\s*<small[^>]*>max<\/small>/);
   });
 });
 

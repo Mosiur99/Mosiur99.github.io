@@ -92,10 +92,16 @@ export const achievementSchema = z
     team: z.string().min(1).optional(),
     endYear: z.number().int().min(2015).max(2100).optional(),
     link: z.url().optional(),
+    featured: z.boolean().default(false),
+    summary: z.string().min(1).max(200).optional(),
   })
   .refine((a) => a.endYear === undefined || a.endYear >= a.year, {
     message: 'endYear cannot be before year',
     path: ['endYear'],
+  })
+  .refine((a) => !(a.featured && a.summary), {
+    message: 'A featured result is shown in the ICPC card and cannot also have a summary card',
+    path: ['summary'],
   });
 
 export const judgePlatforms = [
