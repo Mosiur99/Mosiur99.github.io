@@ -30,29 +30,36 @@ const { profile, sections, jsonLd } = Astro.props;
 </Base>
 
 <style>
+  :global(body) {
+    background: var(--color-page);
+  }
+
   .shell {
     display: grid;
     grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-    min-height: 100vh;
+    align-items: start;
+    gap: 40px;
+    max-width: var(--frame-width);
+    margin-inline: auto;
+    padding-block: 32px 48px;
+    padding-left: max(24px, env(safe-area-inset-left, 0px));
+    padding-right: max(24px, env(safe-area-inset-right, 0px));
   }
 
   main {
     min-width: 0;
-    padding-block: 56px 48px;
-    padding-left: max(56px, env(safe-area-inset-left, 0px));
-    padding-right: max(var(--space-6), env(safe-area-inset-right, 0px));
-  }
-
-  .column {
-    max-width: var(--content-width);
   }
 
   .column :global(section) {
     scroll-margin-top: var(--space-5);
+    padding: 32px 36px;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-bg);
   }
 
   .column :global(section + section) {
-    margin-top: var(--space-8);
+    margin-top: var(--space-5);
   }
 
   .skip-link {
@@ -73,12 +80,16 @@ const { profile, sections, jsonLd } = Astro.props;
   @media (max-width: 1000px) {
     .shell {
       grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
+      padding-block: 20px 40px;
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
     }
+  }
 
-    main {
-      padding-block: 40px 40px;
-      padding-left: max(20px, env(safe-area-inset-left, 0px));
-      padding-right: max(20px, env(safe-area-inset-right, 0px));
+  @media (max-width: 640px) {
+    .column :global(section) {
+      padding: 24px 20px;
     }
   }
 </style>

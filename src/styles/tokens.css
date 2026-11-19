@@ -10,7 +10,17 @@
   --color-accent: #1d4ed8;
   --color-accent-ink: #ffffff;
   --color-accent-soft: #eef3fe;
+  --color-page: #eef1f6;
   --color-ok: #15803d;
+
+  --side-bg: #0f1f3a;
+  --side-ink: #f4f7fc;
+  --side-text: #d6deea;
+  --side-muted: #a9b6cb;
+  --side-line: #24375b;
+  --side-line-strong: #33496f;
+  --side-raise: #182a4b;
+  --side-ok: #4ade80;
 
   --rank-newbie: #8a8f98;
   --rank-pupil: #2f9a44;
@@ -43,7 +53,8 @@
   --radius-md: 8px;
   --radius-lg: 12px;
 
-  --sidebar-width: 320px;
+  --sidebar-width: 300px;
+  --frame-width: 1240px;
   --content-width: 740px;
 
   color-scheme: light;
@@ -62,7 +73,12 @@
     --color-accent: #7aa2ff;
     --color-accent-ink: #0f1318;
     --color-accent-soft: #1a2440;
+    --color-page: #0a0e14;
     --color-ok: #4ade80;
+    --side-bg: #0e1729;
+    --side-line: #1f2c44;
+    --side-line-strong: #2b3b58;
+    --side-raise: #17233a;
     --rank-newbie: #9aa0aa;
     --rank-pupil: #4cc26a;
     --rank-specialist: #2cc7bb;
@@ -86,7 +102,12 @@
   --color-accent: #7aa2ff;
   --color-accent-ink: #0f1318;
   --color-accent-soft: #1a2440;
+  --color-page: #0a0e14;
   --color-ok: #4ade80;
+  --side-bg: #0e1729;
+  --side-line: #1f2c44;
+  --side-line-strong: #2b3b58;
+  --side-raise: #17233a;
   --rank-newbie: #9aa0aa;
   --rank-pupil: #4cc26a;
   --rank-specialist: #2cc7bb;

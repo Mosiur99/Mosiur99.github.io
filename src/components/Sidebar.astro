@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import photo from '../assets/profile.jpg';
 import Button from './Button.astro';
 import Icon from './Icon.astro';
 import SectionNav from './SectionNav.astro';
@@ -17,9 +19,15 @@ const { profile, sections } = Astro.props;
 
 <aside class="sidebar">
   <div class="inner">
-    <div class="photo" role="img" aria-label={`Photo of ${profile.name}`}>
-      <Icon name="user" size={52} />
-    </div>
+    <Image
+      class="photo"
+      src={photo}
+      alt={`Photo of ${profile.name}`}
+      widths={[120, 240]}
+      sizes="120px"
+      loading="eager"
+      fetchpriority="high"
+    />
 
     <div class="who">
       <h1>{profile.name}</h1>
@@ -75,20 +83,32 @@ const { profile, sections } = Astro.props;
 
 <style>
   .sidebar {
-    background: var(--color-panel);
-    border-right: 1px solid var(--color-line);
+    --color-ink: var(--side-ink);
+    --color-text: var(--side-text);
+    --color-muted: var(--side-muted);
+    --color-faint: var(--side-muted);
+    --color-line: var(--side-line);
+    --color-line-strong: var(--side-line-strong);
+    --color-bg: var(--side-raise);
+    --color-ok: var(--side-ok);
+
+    position: sticky;
+    top: max(24px, env(safe-area-inset-top, 0px));
+    border: 1px solid var(--side-line);
+    border-radius: 16px;
+    background: var(--side-bg);
+    color: var(--color-text);
+    overflow: hidden;
   }
 
   .inner {
-    position: sticky;
-    top: env(safe-area-inset-top, 0px);
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-    height: 100vh;
-    height: 100dvh;
+    max-height: calc(100vh - 48px);
+    max-height: calc(100dvh - 48px);
     overflow-y: auto;
-    padding: 40px var(--space-6) 28px max(var(--space-6), env(safe-area-inset-left, 0px));
+    padding: 28px 24px 22px;
   }
 
   .inner > * {
@@ -96,14 +116,12 @@ const { profile, sections } = Astro.props;
   }
 
   .photo {
-    display: grid;
-    place-items: center;
-    width: 104px;
-    height: 104px;
-    border: 1px solid var(--color-line-strong);
-    border-radius: 14px;
-    background: var(--color-bg);
-    color: var(--color-faint);
+    width: 120px;
+    height: 120px;
+    border: 3px solid var(--side-line-strong);
+    border-radius: 50%;
+    background: #fff;
+    object-fit: cover;
   }
 
   h1 {
@@ -114,7 +132,7 @@ const { profile, sections } = Astro.props;
 
   .role {
     margin-top: var(--space-1);
-    color: var(--color-text);
+    color: var(--color-muted);
     font-weight: 500;
   }
 
@@ -142,7 +160,7 @@ const { profile, sections } = Astro.props;
   }
 
   .available {
-    color: var(--color-ok);
+    color: var(--color-ink);
     font-weight: 500;
   }
 
@@ -152,6 +170,7 @@ const { profile, sections } = Astro.props;
     margin: 0 4px;
     border-radius: 50%;
     background: var(--color-ok);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-ok) 25%, transparent);
   }
 
   .actions {
@@ -193,25 +212,22 @@ const { profile, sections } = Astro.props;
   }
 
   .socials a:hover {
-    border-color: var(--color-faint);
+    border-color: var(--color-muted);
     color: var(--color-ink);
   }
 
   @media (max-width: 1000px) {
     .sidebar {
-      border-right: 0;
-      border-bottom: 1px solid var(--color-line);
+      position: static;
     }
 
     .inner {
-      position: static;
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
       column-gap: 20px;
       row-gap: 18px;
-      height: auto;
-      padding: 28px max(20px, env(safe-area-inset-right, 0px)) 24px
-        max(20px, env(safe-area-inset-left, 0px));
+      max-height: none;
+      padding: 24px 20px 20px;
     }
 
     .who {
@@ -229,8 +245,8 @@ const { profile, sections } = Astro.props;
     }
 
     .photo {
-      width: 80px;
-      height: 80px;
+      width: 88px;
+      height: 88px;
     }
   }
 </style>

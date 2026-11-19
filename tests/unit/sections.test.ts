@@ -184,9 +184,34 @@ describe('CompetitiveProgramming', () => {
     expect(html).toContain('<title id="rating-title">Codeforces rating history</title>');
   });
 
-  it('shows the newest results first', async () => {
+  it('shows the newest results first, with month and rank', async () => {
     const html = await render();
-    expect(html.indexOf('UITS Ahmed Zobayer')).toBeLessThan(html.indexOf('ICPC Asia Dhaka'));
+    expect(html.indexOf('National Collegiate Programming Contest')).toBeLessThan(
+      html.indexOf('UITS Ahmed Zobayer'),
+    );
+    expect(html).toContain('Mar 2024');
+    expect(html).toContain('>155th<');
+  });
+
+  it('links standings pages in a new tab with a readable name', async () => {
+    const html = await render();
+    expect(html).toMatch(
+      /href="https:\/\/vjudge\.net\/contest\/538028#rank"[^>]*target="_blank"[^>]*>\s*Standings<span class="visually-hidden"[^>]*> for UITS Ahmed Zobayer/,
+    );
+  });
+
+  it('shows a logo card for every judge, linked to the profile', async () => {
+    const html = await render();
+    for (const p of stats.platforms) {
+      expect(html).toContain(`src="/judges/${p.platform}.`);
+      expect(html).toContain(`href="${p.url}"`);
+    }
+  });
+
+  it('lists contest ratings beside the chart', async () => {
+    const html = await render();
+    expect(html).toContain('Contest ratings');
+    expect(html).toMatch(/<b[^>]*>1434<\/b>\s*<small[^>]*>max<\/small>/);
   });
 });
 

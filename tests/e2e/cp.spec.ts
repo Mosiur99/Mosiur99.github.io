@@ -6,12 +6,23 @@ test.describe('competitive programming', () => {
     await page.goto('/');
   });
 
-  test('adds up the solved table to the total', async ({ page }) => {
-    const rows = page.locator('#cp .solved tbody td');
-    const values = (await rows.allTextContents()).map((v) => Number(v.replaceAll(',', '')));
+  test('adds up the judge cards to the total', async ({ page }) => {
+    const counts = page.locator('#cp .judge .count b');
+    const values = (await counts.allTextContents()).map((v) => Number(v.replaceAll(',', '')));
     expect(values).toHaveLength(data.platforms.length);
-    const total = await page.locator('#cp .solved tfoot td').textContent();
+    const total = await page.locator('#cp .total b').textContent();
     expect(Number(total?.replaceAll(',', ''))).toBe(values.reduce((a, b) => a + b, 0));
+  });
+
+  test('shows a loaded logo on every judge card', async ({ page }) => {
+    const logos = page.locator('#cp .judge img');
+    await expect(logos).toHaveCount(data.platforms.length);
+    for (const logo of await logos.all()) {
+      await logo.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+        .toBeGreaterThan(0);
+    }
   });
 
   test('matches the problems-solved number in the About row', async ({ page }) => {
@@ -27,7 +38,7 @@ test.describe('competitive programming', () => {
   });
 
   test('links every judge profile in a new tab', async ({ page }) => {
-    const links = page.locator('#cp .solved a');
+    const links = page.locator('#cp a.judge');
     await expect(links).toHaveCount(data.platforms.length);
     for (const link of await links.all()) {
       await expect(link).toHaveAttribute('target', '_blank');
@@ -35,8 +46,14 @@ test.describe('competitive programming', () => {
     }
   });
 
-  test('lists contest results and roles', async ({ page }) => {
-    await expect(page.locator('#cp .results li')).toHaveCount(7);
+  test('lists contest results with ranks and standings links', async ({ page }) => {
+    await expect(page.locator('#cp .results li')).toHaveCount(15);
     await expect(page.locator('#cp .results')).toContainText('ICPC Asia Dhaka Regional');
+    const standings = page.locator('#cp .results a.standings');
+    await expect(standings).toHaveCount(4);
+    for (const link of await standings.all()) {
+      await expect(link).toHaveAttribute('target', '_blank');
+      await expect(link).toHaveAttribute('href', /^https:\/\//);
+    }
   });
 });

@@ -149,3 +149,38 @@ test.describe('short windows and larger text', () => {
     expect(fits).toBe(true);
   });
 });
+
+test.describe('responsive frame', () => {
+  test('centres the page on a wide screen', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'Desktop only');
+    await page.setViewportSize({ width: 1920, height: 1000 });
+    await page.goto('/');
+    const sidebar = await page.locator('.sidebar').boundingBox();
+    const main = await page.locator('main').boundingBox();
+    if (!sidebar || !main) throw new Error('layout is not rendered');
+    const left = sidebar.x;
+    const right = 1920 - (main.x + main.width);
+    expect(Math.abs(left - right)).toBeLessThan(40);
+    expect(main.width).toBeGreaterThan(800);
+  });
+
+  for (const width of [360, 820, 1280]) {
+    test(`never scrolls sideways at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      );
+      expect(overflow).toBe(0);
+    });
+  }
+
+  test('shows the profile photo', async ({ page }) => {
+    await page.goto('/');
+    const photo = page.getByRole('img', { name: 'Photo of Mosiur Zzaman' });
+    await expect(photo).toBeVisible();
+    await expect
+      .poll(() => photo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+      .toBeGreaterThan(0);
+  });
+});
