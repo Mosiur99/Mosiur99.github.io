@@ -208,6 +208,11 @@ describe('CompetitiveProgramming', () => {
     }
   });
 
+  it('lets long handles wrap only after an underscore', async () => {
+    const html = await render();
+    expect(html).toMatch(/mosiur_<wbr[^>]*>zaman/);
+  });
+
   it('lists contest ratings beside the chart', async () => {
     const html = await render();
     expect(html).toContain('Contest ratings');
