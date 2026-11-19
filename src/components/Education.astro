@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import SectionHeading from './SectionHeading.astro';
 import type { Education } from '../content/schemas';
 
@@ -7,19 +8,24 @@ interface Props {
 }
 
 const items = [...Astro.props.items].sort((a, b) => a.order - b.order);
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .filter((word) => /^[A-Z]/.test(word))
+    .map((word) => word[0])
+    .join('');
 ---
 
 <section id="education" aria-labelledby="education-title">
   <SectionHeading id="education-title" title="Education" />
-  <ul>
+  <ul class="surface">
     {items.map((item) => (
       <li class="item">
         <div class="logo" aria-hidden="true">
-          {item.institution.charAt(0)}
+          {initials(item.institution)}
         </div>
-        <div class="text">
-          <h3>{item.degree}</h3>
-          <p>
+        <div>
+          <h3>
             {item.url ? (
               <a href={item.url} target="_blank" rel="noopener noreferrer">
                 {item.institution}
@@ -27,11 +33,13 @@ const items = [...Astro.props.items].sort((a, b) => a.order - b.order);
             ) : (
               item.institution
             )}
+          </h3>
+          <p class="degree">{item.degree}</p>
+          <p class="years">
+            <Icon name="calendar" size={14} />
+            {item.startYear} – {item.endYear}
           </p>
         </div>
-        <span class="years">
-          {item.startYear} – {item.endYear}
-        </span>
       </li>
     ))}
   </ul>
@@ -39,60 +47,70 @@ const items = [...Astro.props.items].sort((a, b) => a.order - b.order);
 
 <style>
   ul {
-    display: grid;
-    gap: var(--space-5);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .item {
-    display: grid;
-    grid-template-columns: 48px minmax(0, 1fr) auto;
-    gap: var(--space-4);
+    display: flex;
     align-items: center;
+    gap: 20px;
+    padding: 26px 28px;
+  }
+
+  .item + .item {
+    border-top: 1px solid var(--color-line);
   }
 
   .logo {
     display: grid;
+    flex: none;
     place-items: center;
-    width: 48px;
-    height: 48px;
-    border: 1px solid var(--color-line-strong);
-    border-radius: 10px;
-    background: var(--color-panel);
-    color: var(--color-ink);
-    font-size: var(--text-lg);
-    font-weight: 700;
+    width: 60px;
+    height: 60px;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: var(--shadow-soft);
+    color: #111a35;
+    font: 700 0.9375rem / 1 var(--font-display);
+    letter-spacing: -0.02em;
   }
 
   h3 {
-    font-size: 1.02rem;
+    font-size: 1.3125rem;
     font-weight: 600;
+    letter-spacing: -0.02em;
   }
 
-  p {
-    color: var(--color-muted);
-    font-size: var(--text-sm);
-  }
-
-  p a {
+  h3 a {
     color: inherit;
   }
 
-  .years {
-    color: var(--color-muted);
-    font: var(--text-xs) var(--font-mono);
+  .degree {
+    margin-top: 2px;
   }
 
-  @media (max-width: 640px) {
+  .years {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+  }
+
+  @media (max-width: 560px) {
     .item {
-      grid-template-columns: 48px minmax(0, 1fr);
-      row-gap: 2px;
+      align-items: flex-start;
+      padding: 22px 20px;
     }
 
-    .years {
-      grid-column: 2;
+    .logo {
+      width: 48px;
+      height: 48px;
+      font-size: 0.8125rem;
     }
   }
 </style>

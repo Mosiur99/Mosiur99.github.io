@@ -86,6 +86,12 @@ describe('Experience', () => {
     expect(html.match(/class="role current/g)).toHaveLength(1);
   });
 
+  it('shows the marked phrases of each bullet in bold', async () => {
+    const html = await container.renderToString(Experience, { props: { companies, today } });
+    expect(html).toMatch(/<b[^>]*>event-driven processing<\/b>/);
+    expect(html).not.toContain('**');
+  });
+
   it('orders companies by their order field', async () => {
     const older = { ...rokomari, company: 'Older Co', order: 2 };
     const html = await container.renderToString(Experience, {
@@ -120,6 +126,13 @@ describe('Projects', () => {
     expect(html).toContain('In progress');
   });
 
+  it('gives every project an icon and says when the code is not public', async () => {
+    const html = await render();
+    expect(html.match(/class="tile"/g)).toHaveLength(projects.length);
+    const withoutLinks = projects.filter((p) => !p.featured && p.links.length === 0).length;
+    expect(html.match(/Code not public yet/g) ?? []).toHaveLength(withoutLinks);
+  });
+
   it('names each link after its project for screen readers', async () => {
     const html = await render();
     expect(html).toContain('for PayLedger');
@@ -133,8 +146,18 @@ describe('Skills', () => {
     const html = await container.renderToString(Skills, {
       props: { groups: [...groups].reverse() },
     });
-    const names = [...html.matchAll(/<dt[^>]*>([^<]+)<\/dt>/g)].map((m) => m[1]);
+    const names = [...html.matchAll(/<dt[^>]*>([\s\S]*?)<\/dt>/g)].map((m) =>
+      m[1]?.replace(/<[^>]+>/g, '').trim(),
+    );
     expect(names).toEqual([...groups].sort((a, b) => a.order - b.order).map((g) => g.name));
+  });
+
+  it('shows each item as its own chip with a group icon', async () => {
+    const groups = readYamlEntries('skills.yaml').map(([, data]) => skillGroupSchema.parse(data));
+    const html = await container.renderToString(Skills, { props: { groups } });
+    const items = groups.reduce((sum, g) => sum + g.items.length, 0);
+    expect(html.match(/<li[^>]*>/g)).toHaveLength(items);
+    expect(html.match(/<svg/g)).toHaveLength(groups.length);
   });
 });
 
@@ -251,6 +274,7 @@ describe('Education', () => {
     expect(html).toContain('B.Sc. in Computer Science and Telecommunication Engineering');
     expect(html).toMatch(/href="https:\/\/nstu\.edu\.bd"[^>]*target="_blank"/);
     expect(html).toContain('2019 – 2024');
+    expect(html).toMatch(/class="logo"[^>]*>\s*NSTU\s*</);
   });
 });
 

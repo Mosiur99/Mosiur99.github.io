@@ -1,4 +1,5 @@
 import { z } from 'astro/zod';
+import { icons, type IconName } from '../lib/icons';
 
 const yearMonth = z
   .string()
@@ -136,8 +137,11 @@ export const educationSchema = z.object({
   order: z.number().int(),
 });
 
+const iconNames = Object.keys(icons) as [IconName, ...IconName[]];
+
 export const skillGroupSchema = z.object({
   name: z.string().min(1),
+  icon: z.enum(iconNames).default('code'),
   items: z.array(z.string().min(1)).min(1),
   order: z.number().int(),
 });

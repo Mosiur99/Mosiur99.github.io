@@ -1,34 +1,50 @@
 ---
 import Button from './Button.astro';
+import SectionHeading from './SectionHeading.astro';
 import type { Profile } from '../content/schemas';
+import { isExternal } from '../lib/socials';
 
 interface Props {
   profile: Profile;
 }
 
 const { profile } = Astro.props;
-const linkedin = profile.socials.find((social) => social.kind === 'linkedin');
+const links = profile.socials.filter((social) => social.kind !== 'email');
 ---
 
 <section id="contact" aria-labelledby="contact-title">
-  <div class="panel">
-    <h2 id="contact-title">Get in touch</h2>
-    <p class="note">{profile.contact}</p>
-    <div class="actions">
-      <code id="contact-email">{profile.email}</code>
-      <Button icon="copy" data-copy-email>
-        Copy email
-      </Button>
-      <Button variant="primary" icon="mail" href={`mailto:${profile.email}`}>
-        Send email
-      </Button>
-      {linkedin && (
-        <Button href={linkedin.url} external icon="linkedin">
-          LinkedIn
-        </Button>
-      )}
+  <div class="contact">
+    <div>
+      <SectionHeading id="contact-title" title="Contact Me" />
+      <p class="note">{profile.contact}</p>
     </div>
-    <p class="status" role="status" aria-live="polite" data-copy-status></p>
+    <div>
+      <div class="mail">
+        <code id="contact-email">{profile.email}</code>
+        <div class="actions">
+          <Button icon="copy" data-copy-email>
+            Copy email
+          </Button>
+          <Button variant="primary" icon="mail" href={`mailto:${profile.email}`}>
+            Send email
+          </Button>
+        </div>
+      </div>
+      <p class="status" role="status" aria-live="polite" data-copy-status></p>
+      <ul class="links">
+        {links.map((social) => (
+          <li>
+            <a
+              href={social.url}
+              target={isExternal(social.url) ? '_blank' : undefined}
+              rel={isExternal(social.url) ? 'noopener noreferrer' : undefined}
+            >
+              {social.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -59,48 +75,90 @@ const linkedin = profile.socials.find((social) => social.kind === 'linkedin');
 </script>
 
 <style>
-  .panel {
-    padding: 28px;
-    border: 1px solid var(--color-line-strong);
-    border-radius: var(--radius-lg);
-    background: var(--color-panel);
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--color-line);
   }
 
-  h2 {
-    font-size: var(--text-xl);
-    font-weight: 700;
-    letter-spacing: -0.01em;
+  .contact :global(.section-heading) {
+    margin-bottom: 12px;
   }
 
   .note {
-    max-width: 58ch;
-    margin-top: var(--space-2);
-    color: var(--color-muted);
+    max-width: 32em;
+  }
+
+  .mail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 16px;
+    padding: 18px 0;
+    border-block: 1px solid var(--color-line);
+  }
+
+  code {
+    color: var(--color-ink);
+    font: 500 clamp(1.0625rem, 2.4vw, 1.5rem) / 1.2 var(--font-display);
+    overflow-wrap: anywhere;
+    user-select: all;
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2);
-    margin-top: 18px;
-  }
-
-  code {
-    padding: 8px 12px;
-    border: 1px solid var(--color-line-strong);
-    border-radius: var(--radius-md);
-    background: var(--color-bg);
-    color: var(--color-ink);
-    font-size: var(--text-sm);
-    overflow-wrap: anywhere;
-    user-select: all;
+    gap: 8px;
   }
 
   .status {
     min-height: 1.5em;
-    margin-top: var(--space-2);
+    margin-top: 6px;
     color: var(--color-ok);
     font-size: var(--text-xs);
+  }
+
+  .links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px 18px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .links a {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+  }
+
+  .links a::after {
+    content: '↗';
+    color: var(--color-muted);
+  }
+
+  .links a:hover {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  @media (max-width: 760px) {
+    .contact {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .links {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 </style>

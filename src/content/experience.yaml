@@ -10,15 +10,16 @@ rokomari:
       end: null
       bullets:
         - >-
-          Build backend features for a large e-commerce platform, including event pipelines,
-          caching, product search, payments and role-based access control.
+          Build backend features for a large **e-commerce platform**, including **event
+          pipelines**, **caching**, **product search**, **payments** and **role-based access
+          control**.
         - >-
-          Design event-driven processing with Kafka and RabbitMQ for activity tracking and
+          Design **event-driven processing** with Kafka and RabbitMQ for activity tracking and
           asynchronous audit logging.
         - >-
-          Improve slow reports and batch jobs using keyset pagination, chunked processing, index
-          tuning and better algorithms.
-        - Write unit and integration tests and take part in code review.
+          Improve slow reports and batch jobs using **keyset pagination**, **chunked processing**,
+          index tuning and better algorithms.
+        - Write unit and integration tests and take part in **code review**.
       tools: [Java, Spring Boot, MySQL, Redis, RabbitMQ, Kafka, Elasticsearch]
     - title: Software Engineer Intern
       start: 2024-03

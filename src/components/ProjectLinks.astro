@@ -1,5 +1,4 @@
 ---
-import Icon from './Icon.astro';
 import type { Project } from '../content/schemas';
 
 interface Props {
@@ -14,10 +13,9 @@ const { links, title } = Astro.props;
   <ul class="project-links">
     {links.map((link) => (
       <li>
-        <a href={link.url} target="_blank" rel="noopener noreferrer">
+        <a class="out-link" href={link.url} target="_blank" rel="noopener noreferrer">
           {link.label}
           <span class="visually-hidden"> for {title}</span>
-          <Icon name="external" size={14} />
         </a>
       </li>
     ))}
@@ -28,17 +26,11 @@ const { links, title } = Astro.props;
   .project-links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-4);
+    gap: 6px 18px;
     margin: 0;
     padding: 0;
     list-style: none;
     font-size: var(--text-sm);
     font-weight: 500;
-  }
-
-  a {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
   }
 </style>

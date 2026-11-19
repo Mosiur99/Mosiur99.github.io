@@ -1,24 +1,30 @@
 languages:
   name: Languages
+  icon: code
   items: [Java, SQL, Python, C++, JavaScript]
   order: 1
 backend:
   name: Backend
+  icon: server
   items: [Spring Boot, Spring Security, Spring Data JPA, Hibernate, OAuth2, Keycloak, REST]
   order: 2
 data:
   name: Data stores
+  icon: database
   items: [PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch, Flyway, Liquibase]
   order: 3
 messaging:
   name: Messaging
+  icon: flow
   items: [Kafka, RabbitMQ, WebSocket, STOMP, Transactional outbox]
   order: 4
 devops:
   name: Cloud and DevOps
+  icon: cloud
   items: [Docker, Kubernetes, Helm, GitHub Actions, Prometheus, Grafana, Amazon S3]
   order: 5
 testing:
   name: Testing
+  icon: check
   items: [JUnit 5, Mockito, MockMvc, Testcontainers]
   order: 6

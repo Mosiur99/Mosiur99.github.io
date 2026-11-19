@@ -1,3 +1,4 @@
+import type { IconName } from './icons';
 import type { Project } from '../content/schemas';
 
 const kindLabels: Record<Project['kind'], string> = {
@@ -6,6 +7,14 @@ const kindLabels: Record<Project['kind'], string> = {
   'web-app': 'Web app',
   'real-time': 'Real-time',
   ai: 'AI',
+};
+
+export const kindIcons: Record<Project['kind'], IconName> = {
+  system: 'ledger',
+  'open-source': 'pullRequest',
+  'web-app': 'browser',
+  'real-time': 'bolt',
+  ai: 'sparkle',
 };
 
 const statusLabels: Record<Project['status'], string | null> = {
