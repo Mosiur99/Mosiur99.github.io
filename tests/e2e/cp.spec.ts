@@ -14,6 +14,14 @@ test.describe('competitive programming', () => {
     expect(Number(total?.replaceAll(',', ''))).toBe(values.reduce((a, b) => a + b, 0));
   });
 
+  test('shows full handles with a larger browser font', async ({ page }) => {
+    await page.evaluate(() => (document.documentElement.style.fontSize = '125%'));
+    for (const handle of await page.locator('#cp .judge .handle').all()) {
+      const clipped = await handle.evaluate((el) => el.scrollWidth > el.clientWidth);
+      expect(clipped).toBe(false);
+    }
+  });
+
   test('shows a loaded logo on every judge card', async ({ page }) => {
     const logos = page.locator('#cp .judge img');
     await expect(logos).toHaveCount(data.platforms.length);
