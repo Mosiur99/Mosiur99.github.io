@@ -170,6 +170,17 @@ test.describe('larger text', () => {
     );
     expect(overflow).toBe(0);
   });
+
+  test('never cuts off a heading or label', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => (document.documentElement.style.fontSize = '125%'));
+    const clipped = await page.evaluate(() =>
+      [...document.querySelectorAll('main :is(h1, h2, h3, h4, dd, .rank, .title, .handle)')]
+        .filter((el) => el.scrollWidth > el.clientWidth + 1)
+        .map((el) => el.textContent?.trim()),
+    );
+    expect(clipped).toEqual([]);
+  });
 });
 
 test.describe('responsive frame', () => {
