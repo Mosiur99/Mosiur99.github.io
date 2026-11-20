@@ -75,6 +75,14 @@ test.describe('problem solving and achievements', () => {
     }
   });
 
+  test('shows the award photo', async ({ page }) => {
+    const photo = page.locator('#achievements .award img.photo');
+    await photo.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() => photo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+      .toBeGreaterThan(0);
+  });
+
   test('shows the ICPC logo on the ICPC card', async ({ page }) => {
     const logo = page.locator('#achievements').getByRole('img', { name: 'ICPC logo' });
     await logo.scrollIntoViewIfNeeded();

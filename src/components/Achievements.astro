@@ -70,10 +70,22 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
     <ul class="cards">
       {cards.map((a) =>
         a.category === 'award' ? (
-          <li class="card award surface">
-            <span class="tile" aria-hidden="true">
-              <Icon name="award" size={22} />
-            </span>
+          <li class:list={['card award surface', { 'has-photo': a.image }]}>
+            {a.image ? (
+              <img
+                class="photo"
+                src={a.image.src}
+                alt={a.image.alt}
+                width="570"
+                height="602"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="tile" aria-hidden="true">
+                <Icon name="award" size={22} />
+              </span>
+            )}
             <div class="award-body">
               <h3>{a.title}</h3>
               <p>{a.summary}</p>
@@ -289,6 +301,13 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
     color: var(--color-accent);
   }
 
+  .award .photo {
+    width: 210px;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: var(--shadow-soft);
+  }
+
   .award-body {
     display: grid;
     gap: 4px;
@@ -424,6 +443,14 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
 
     .card.award {
       grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .card.award.has-photo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .award .photo {
+      width: 100%;
     }
 
     .award-side {

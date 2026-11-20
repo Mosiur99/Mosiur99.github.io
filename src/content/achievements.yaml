@@ -11,6 +11,9 @@ rokomari-ownership-award-2026:
   summary: >-
     Monthly team award for going beyond assigned work to find the root cause of issues and fix
     them for good.
+  image:
+    src: /awards/ownership-award-2026.webp
+    alt: Mosiur receiving the Ownership Award at Rokomari.com
 ncpc-2023:
   title: National Collegiate Programming Contest 2023, onsite at JU
   result: 155th

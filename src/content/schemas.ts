@@ -99,6 +99,7 @@ export const achievementSchema = z
       .default([]),
     featured: z.boolean().default(false),
     summary: z.string().min(1).max(200).optional(),
+    image: z.object({ src: sitePath, alt: z.string().min(1) }).optional(),
   })
   .refine((a) => a.endYear === undefined || a.endYear >= a.year, {
     message: 'endYear cannot be before year',

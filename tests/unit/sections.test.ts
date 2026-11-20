@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { beforeAll, describe, expect, it } from 'vitest';
 import Achievements from '../../src/components/Achievements.astro';
@@ -277,7 +278,7 @@ describe('Achievements', () => {
   it('gives each result with a summary its own card', async () => {
     const html = await render();
     const withSummary = achievements.filter((a) => a.summary);
-    expect(html.match(/class="card (award )?surface"/g)).toHaveLength(withSummary.length);
+    expect(html.match(/class="card (award )?surface( has-photo)?"/g)).toHaveLength(withSummary.length);
     withSummary.forEach((a) => expect(html).toContain(a.summary?.replaceAll("'", '&#39;')));
   });
 
@@ -285,8 +286,20 @@ describe('Achievements', () => {
     const html = await render();
     const awards = achievements.filter((a) => a.category === 'award');
     expect(awards.length).toBeGreaterThan(0);
-    expect(html.match(/class="card award surface"/g)).toHaveLength(awards.length);
+    expect(html.match(/class="card award surface( has-photo)?"/g)).toHaveLength(awards.length);
     awards.forEach((a) => expect(html).toContain(a.title));
+  });
+
+  it('shows the award photo with alt text and lazy loading', async () => {
+    const html = await render();
+    const withPhoto = achievements.filter((a) => a.image);
+    expect(withPhoto.length).toBeGreaterThan(0);
+    withPhoto.forEach((a) => {
+      expect(html).toContain(`src="${a.image?.src}"`);
+      expect(html).toContain(`alt="${a.image?.alt}"`);
+      expect(existsSync(`public${a.image?.src}`)).toBe(true);
+    });
+    expect(html).toMatch(/class="photo"[^>]*loading="lazy"|loading="lazy"[^>]*class="photo"/);
   });
 
   it('links the contests a card mentions', async () => {
