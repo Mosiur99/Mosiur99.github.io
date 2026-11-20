@@ -278,7 +278,9 @@ describe('Achievements', () => {
   it('gives each result with a summary its own card', async () => {
     const html = await render();
     const withSummary = achievements.filter((a) => a.summary);
-    expect(html.match(/class="card (award )?surface( has-photo)?"/g)).toHaveLength(withSummary.length);
+    expect(html.match(/class="card (award )?surface( has-photo)?"/g)).toHaveLength(
+      withSummary.length,
+    );
     withSummary.forEach((a) => expect(html).toContain(a.summary?.replaceAll("'", '&#39;')));
   });
 
