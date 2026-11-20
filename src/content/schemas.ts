@@ -81,7 +81,7 @@ export const projectSchema = z.object({
   order: z.number().int(),
 });
 
-export const achievementCategories = ['icpc', 'contest', 'setting', 'mentoring'] as const;
+export const achievementCategories = ['icpc', 'award', 'contest', 'setting', 'mentoring'] as const;
 
 export const achievementSchema = z
   .object({

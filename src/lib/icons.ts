@@ -112,6 +112,10 @@ export const icons = {
       'M8 20h8',
     ],
   },
+  award: {
+    viewBox: '0 0 24 24',
+    paths: ['M18 8.5a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z', 'M8.5 13.4 7 22l5-3 5 3-1.5-8.6'],
+  },
   server: {
     viewBox: '0 0 24 24',
     paths: ['M4 4h16v7H4z', 'M4 13h16v7H4z', 'M8 7.5h.01', 'M8 16.5h.01'],

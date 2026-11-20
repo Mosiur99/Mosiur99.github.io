@@ -20,7 +20,7 @@ export interface AchievementGroups {
 }
 
 // Contest wins come before problem setting and teaching on the cards.
-const categoryOrder: Achievement['category'][] = ['icpc', 'contest', 'setting', 'mentoring'];
+const categoryOrder: Achievement['category'][] = ['icpc', 'award', 'contest', 'setting', 'mentoring'];
 
 /**
  * Splits results into the ICPC card, the summary cards and the remaining list. Each group is

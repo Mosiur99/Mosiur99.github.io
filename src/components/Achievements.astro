@@ -12,6 +12,7 @@ interface Props {
 const { featured, cards, more } = groupAchievements(Astro.props.achievements);
 const cardIcons: Record<Achievement['category'], IconName> = {
   icpc: 'trophy',
+  award: 'award',
   contest: 'trophy',
   setting: 'code',
   mentoring: 'user',
@@ -24,7 +25,7 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
   <SectionHeading
     id="achievements-title"
     title="Achievements"
-    subtitle="Programming contests, team results and teaching"
+    subtitle="Awards, programming contests, team results and teaching"
   />
 
   {featured.length > 0 && (
@@ -67,43 +68,62 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
 
   {cards.length > 0 && (
     <ul class="cards">
-      {cards.map((a) => (
-        <li class="card surface">
-          <div class="head">
+      {cards.map((a) =>
+        a.category === 'award' ? (
+          <li class="card award surface">
             <span class="tile" aria-hidden="true">
-              <Icon name={cardIcons[a.category]} size={18} />
+              <Icon name="award" size={22} />
             </span>
-            <span class="rank">{a.result}</span>
-          </div>
-          <h3>{a.title}</h3>
-          <p>{a.summary}</p>
-          <div class="foot">
-            {(a.link || a.links.length > 0) && (
-              <ul class="card-links">
-                {a.link && (
-                  <li>
-                    <a class="out-link" href={a.link} target="_blank" rel="noopener noreferrer">
-                      Standings<span class="visually-hidden"> for {a.title}</span>
-                    </a>
-                  </li>
-                )}
-                {a.links.map((link) => (
-                  <li>
-                    <a class="out-link" href={link.url} target="_blank" rel="noopener noreferrer">
-                      {link.label}
-                      <span class="visually-hidden"> contest page</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <p class="when">
-              <Icon name="calendar" size={13} />
-              {achievementDate(a)}
-            </p>
-          </div>
-        </li>
-      ))}
+            <div class="award-body">
+              <h3>{a.title}</h3>
+              <p>{a.summary}</p>
+            </div>
+            <div class="award-side">
+              <span class="rank">{a.result}</span>
+              <p class="when">
+                <Icon name="calendar" size={13} />
+                {achievementDate(a)}
+              </p>
+            </div>
+          </li>
+        ) : (
+          <li class="card surface">
+            <div class="head">
+              <span class="tile" aria-hidden="true">
+                <Icon name={cardIcons[a.category]} size={18} />
+              </span>
+              <span class="rank">{a.result}</span>
+            </div>
+            <h3>{a.title}</h3>
+            <p>{a.summary}</p>
+            <div class="foot">
+              {(a.link || a.links.length > 0) && (
+                <ul class="card-links">
+                  {a.link && (
+                    <li>
+                      <a class="out-link" href={a.link} target="_blank" rel="noopener noreferrer">
+                        Standings<span class="visually-hidden"> for {a.title}</span>
+                      </a>
+                    </li>
+                  )}
+                  {a.links.map((link) => (
+                    <li>
+                      <a class="out-link" href={link.url} target="_blank" rel="noopener noreferrer">
+                        {link.label}
+                        <span class="visually-hidden"> contest page</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p class="when">
+                <Icon name="calendar" size={13} />
+                {achievementDate(a)}
+              </p>
+            </div>
+          </li>
+        ),
+      )}
     </ul>
   )}
 
@@ -253,6 +273,33 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
     padding: 22px;
   }
 
+  .card.award {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 6px 20px;
+  }
+
+  .award .tile {
+    width: 52px;
+    height: 52px;
+    border-color: transparent;
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+  }
+
+  .award-body {
+    display: grid;
+    gap: 4px;
+  }
+
+  .award-side {
+    display: grid;
+    justify-items: end;
+    gap: 8px;
+  }
+
   .head {
     display: flex;
     align-items: center;
@@ -373,6 +420,17 @@ const columns = [more.slice(0, half), more.slice(half)].filter((column) => colum
   @media (max-width: 560px) {
     .cards {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .card.award {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .award-side {
+      grid-column: 1 / -1;
+      grid-auto-flow: column;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .results li {

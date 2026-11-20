@@ -21,6 +21,7 @@ rokomari:
           Improve slow reports and batch jobs using **keyset pagination**, **chunked processing**,
           index tuning and better algorithms.
         - Write unit and integration tests and take part in **code review**.
+        - Received the team's monthly **Ownership Award** (August 2026) for tracing issues to their root cause beyond my own tasks.
       tools: [Java, Spring Boot, MySQL, Redis, RabbitMQ, Kafka, Elasticsearch]
     - title: Software Engineer Intern
       start: 2024-03

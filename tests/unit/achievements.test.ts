@@ -72,14 +72,16 @@ describe('groupAchievements', () => {
     expect(groups.more.map((a) => a.title)).toEqual(['newer contest', 'older contest']);
   });
 
-  it('shows contest results before problem setting and teaching on the cards', () => {
+  it('shows awards, then contest results, then problem setting and teaching on the cards', () => {
     const list = [
+      make('award', { year: 2020, category: 'award', summary: 'Ownership' }),
       make('trainer', { year: 2024, category: 'mentoring', summary: 'Taught' }),
       make('setter', { year: 2024, category: 'setting', summary: 'Set problems' }),
       make('older win', { year: 2021, summary: 'Won' }),
       make('newer win', { year: 2022, summary: 'Won' }),
     ];
     expect(groupAchievements(list).cards.map((a) => a.title)).toEqual([
+      'award',
       'newer win',
       'older win',
       'setter',

@@ -277,8 +277,16 @@ describe('Achievements', () => {
   it('gives each result with a summary its own card', async () => {
     const html = await render();
     const withSummary = achievements.filter((a) => a.summary);
-    expect(html.match(/class="card surface"/g)).toHaveLength(withSummary.length);
+    expect(html.match(/class="card (award )?surface"/g)).toHaveLength(withSummary.length);
     withSummary.forEach((a) => expect(html).toContain(a.summary?.replaceAll("'", '&#39;')));
+  });
+
+  it('shows each award as a wide card with a medal', async () => {
+    const html = await render();
+    const awards = achievements.filter((a) => a.category === 'award');
+    expect(awards.length).toBeGreaterThan(0);
+    expect(html.match(/class="card award surface"/g)).toHaveLength(awards.length);
+    awards.forEach((a) => expect(html).toContain(a.title));
   });
 
   it('links the contests a card mentions', async () => {

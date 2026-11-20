@@ -63,7 +63,8 @@ test.describe('problem solving and achievements', () => {
   test('lists contest results with ranks and standings links', async ({ page }) => {
     const section = page.locator('#achievements');
     await expect(section.locator('.icpc .rows li')).toHaveCount(2);
-    await expect(section.locator('.card')).toHaveCount(4);
+    await expect(section.locator('.card')).toHaveCount(5);
+    await expect(section.locator('.card.award')).toContainText('Ownership Award');
     await expect(section.locator('.results li')).toHaveCount(19);
     await expect(section).toContainText('Team NSTU_SnackAttack');
     const standings = section.locator('a.standings');
