@@ -143,6 +143,7 @@ export const educationSchema = z.object({
   degree: z.string().min(1),
   institution: z.string().min(1),
   url: z.url().optional(),
+  logo: sitePath.optional(),
   startYear: z.number().int().min(1990).max(2100),
   endYear: z.number().int().min(1990).max(2100),
   order: z.number().int(),

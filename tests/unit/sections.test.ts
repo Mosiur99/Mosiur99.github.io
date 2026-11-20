@@ -19,6 +19,7 @@ import {
 } from '../../src/content/schemas';
 import type { CpStats } from '../../src/lib/cp/types';
 import { readFrontmatter, readYamlEntries } from './content-loader';
+import { skillLogo } from '../../src/lib/skill-logos';
 
 let container: AstroContainer;
 const [[, profileData]] = readYamlEntries('profile.yaml') as [[string, unknown]];
@@ -163,12 +164,15 @@ describe('Skills', () => {
     expect(names).toEqual([...groups].sort((a, b) => a.order - b.order).map((g) => g.name));
   });
 
-  it('shows each item as its own chip with a group icon', async () => {
+  it('gives every skill chip a logo, or its group icon when it has no logo', async () => {
     const groups = readYamlEntries('skills.yaml').map(([, data]) => skillGroupSchema.parse(data));
     const html = await container.renderToString(Skills, { props: { groups } });
-    const items = groups.reduce((sum, g) => sum + g.items.length, 0);
-    expect(html.match(/<li[^>]*>/g)).toHaveLength(items);
-    expect(html.match(/<svg/g)).toHaveLength(groups.length);
+    const items = groups.flatMap((g) => g.items);
+    const withLogo = items.filter((item) => skillLogo(item));
+    expect(html.match(/<li[^>]*>/g)).toHaveLength(items.length);
+    expect(html.match(/<img src="\/skills\//g)).toHaveLength(withLogo.length);
+    expect(html.match(/class="mark fallback"/g)).toHaveLength(items.length - withLogo.length);
+    expect(html).toContain('src="/skills/openjdk.svg"');
   });
 });
 
@@ -324,6 +328,16 @@ describe('Education', () => {
     expect(html).toContain('B.Sc. in Computer Science and Telecommunication Engineering');
     expect(html).toMatch(/href="https:\/\/nstu\.edu\.bd"[^>]*target="_blank"/);
     expect(html).toContain('2019 – 2024');
+    expect(html).toContain(
+      'src="/logos/nstu.png" alt="Noakhali Science and Technology University logo"',
+    );
+  });
+
+  it('falls back to the initials when there is no logo', async () => {
+    const items = readYamlEntries('education.yaml').map(([, data]) =>
+      educationSchema.parse({ ...(data as object), logo: undefined }),
+    );
+    const html = await container.renderToString(Education, { props: { items } });
     expect(html).toMatch(/class="logo"[^>]*>\s*NSTU\s*</);
   });
 });

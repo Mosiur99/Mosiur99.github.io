@@ -21,9 +21,15 @@ const initials = (name: string) =>
   <ul class="surface">
     {items.map((item) => (
       <li class="item">
-        <div class="logo" aria-hidden="true">
-          {initials(item.institution)}
-        </div>
+        {item.logo ? (
+          <div class="logo">
+            <img src={item.logo} alt={`${item.institution} logo`} width="34" height="49" />
+          </div>
+        ) : (
+          <div class="logo" aria-hidden="true">
+            {initials(item.institution)}
+          </div>
+        )}
         <div>
           <h3>
             {item.url ? (
@@ -78,6 +84,16 @@ const initials = (name: string) =>
     letter-spacing: -0.02em;
   }
 
+  .logo:has(img) {
+    width: 76px;
+    height: 76px;
+  }
+
+  .logo img {
+    width: auto;
+    height: 62px;
+  }
+
   h3 {
     font-size: 1.3125rem;
     font-weight: 600;
@@ -111,6 +127,15 @@ const initials = (name: string) =>
       width: 48px;
       height: 48px;
       font-size: 0.8125rem;
+    }
+
+    .logo:has(img) {
+      width: 58px;
+      height: 58px;
+    }
+
+    .logo img {
+      height: 46px;
     }
   }
 </style>
