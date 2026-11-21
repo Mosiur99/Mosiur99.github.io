@@ -133,10 +133,11 @@ describe('Projects', () => {
     expect(html.match(/class="step"/g)).toHaveLength(5);
   });
 
-  it('shows status badges for unfinished projects', async () => {
+  it('shows a status badge only for unfinished projects', async () => {
     const html = await render();
+    const unfinished = projects.filter((p) => p.status !== 'complete');
+    expect(html.match(/class="status"/g) ?? []).toHaveLength(unfinished.length);
     expect(html).toContain('Under review');
-    expect(html).toContain('In progress');
   });
 
   it('gives every project an icon and says when the code is not public', async () => {
