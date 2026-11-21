@@ -17,6 +17,7 @@ test.describe('projects and skills', () => {
     await expect(titles).toHaveText([
       'Lettuce',
       'MarketPulse',
+      'MarketPulse Chrome Extension',
       'Real-Time Score Broadcaster',
       'SmartTour',
     ]);

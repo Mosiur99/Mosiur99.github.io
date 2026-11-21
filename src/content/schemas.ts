@@ -64,7 +64,14 @@ export const experienceSchema = z.object({
   roles: z.array(roleSchema).min(1),
 });
 
-export const projectKinds = ['system', 'open-source', 'web-app', 'real-time', 'ai'] as const;
+export const projectKinds = [
+  'system',
+  'open-source',
+  'web-app',
+  'real-time',
+  'ai',
+  'extension',
+] as const;
 export const projectStatuses = ['complete', 'in-progress', 'under-review'] as const;
 
 export const projectSchema = z.object({

@@ -7,6 +7,7 @@ const kindLabels: Record<Project['kind'], string> = {
   'web-app': 'Web app',
   'real-time': 'Real-time',
   ai: 'AI',
+  extension: 'Chrome extension',
 };
 
 export const kindIcons: Record<Project['kind'], IconName> = {
@@ -15,6 +16,7 @@ export const kindIcons: Record<Project['kind'], IconName> = {
   'web-app': 'browser',
   'real-time': 'bolt',
   ai: 'sparkle',
+  extension: 'browser',
 };
 
 const statusLabels: Record<Project['status'], string | null> = {
