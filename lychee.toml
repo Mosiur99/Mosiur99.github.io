@@ -5,7 +5,7 @@ accept = [200, 206, 429]
 include_mail = false
 
 # The live site (internal links are checked through the files themselves) and sites that
-# block automated requests even though the pages exist.
+# block automated requests or go down often even though the pages exist.
 exclude = [
   "^https://mosiur99\\.github\\.io",
   "^https://codeforces\\.com/",
@@ -15,5 +15,6 @@ exclude = [
   "^https://leetcode\\.com/",
   "^https://www\\.hackerrank\\.com/",
   "^https://www\\.rokomari\\.com",
+  "^https://uhunt\\.onlinejudge\\.org/",
   "^https://fonts\\.",
 ]
