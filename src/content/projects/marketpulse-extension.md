@@ -17,5 +17,5 @@ flow: [chrome.alarms, Service worker, RSS feeds, Score + dedupe, Notification]
 links:
   - label: Source code
     url: https://github.com/Mosiur99/marketpulse-extension
-order: 4
+order: 5
 ---

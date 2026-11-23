@@ -15,6 +15,7 @@ test.describe('projects and skills', () => {
   test('shows the other projects in order with their badges', async ({ page }) => {
     const titles = page.locator('#projects .card h3');
     await expect(titles).toHaveText([
+      'Apache Wicket',
       'Lettuce',
       'MarketPulse',
       'MarketPulse Chrome Extension',
@@ -23,6 +24,9 @@ test.describe('projects and skills', () => {
     ]);
     const lettuce = page.locator('#projects .card', { hasText: 'Lettuce' });
     await expect(lettuce).toContainText('Under review');
+    const wicket = page.locator('#projects .card', { hasText: 'Apache Wicket' });
+    await expect(wicket).toContainText('Open source');
+    await expect(wicket).not.toContainText('Under review');
   });
 
   test('opens project links safely in a new tab', async ({ page }) => {

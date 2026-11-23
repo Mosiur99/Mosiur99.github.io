@@ -17,5 +17,5 @@ flow: [Binance feed, Ingestor, PostgreSQL + pgvector, Agent + tools, Telegram]
 links:
   - label: Source code
     url: https://github.com/Mosiur99/marketpulse
-order: 3
+order: 4
 ---

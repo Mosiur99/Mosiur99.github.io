@@ -10,5 +10,5 @@ stack: [Java, Redis]
 links:
   - label: View pull request
     url: https://github.com/redis/lettuce/pull/4008
-order: 2
+order: 3
 ---
